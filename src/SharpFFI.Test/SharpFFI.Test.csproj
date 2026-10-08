@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SharpFFI.Generators.Cpp\SharpFFI.Generators.Cpp.csproj" />
+        <ProjectReference Include="..\SharpFFI.Generators.C\SharpFFI.Generators.C.csproj" />
+        <ProjectReference Include="..\SharpFFI.Primitives\SharpFFI.Primitives.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SharpFFI.Polyfills/SharpFFI.Polyfills.csproj" />
+    <Project Path="src/SharpFFI.Primitives/SharpFFI.Primitives.csproj" />
+    <Project Path="src/SharpFFI.Test/SharpFFI.Test.csproj" />
+    <Project Path="src/SharpFFI.Generators.Core/SharpFFI.Generators.Core.csproj" />
+    <Project Path="src/SharpFFI.Generators.C/SharpFFI.Generators.C.csproj" />
+    <Project Path="src/SharpFFI.Generators.Cpp/SharpFFI.Generators.Cpp.csproj" />
+  </Folder>
+</Solution>
