@@ -1,6 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using SharpFFI;
+﻿using System.Runtime.InteropServices;
+using SharpFFI.Annotations;
 using SharpFFI.Primitives.Utf8;
 
 /*
@@ -26,40 +25,46 @@ using SharpFFI.Primitives.Utf8;
  *   Написать хедер онли библиотеку, которая будет повторять структуры из си шарпа и содержать в себе все необходимые функции
  */
 
-unsafe
+namespace SharpFFI.Test;
+
+[Handle]
+public readonly partial struct GlWindow;
+
+public static class Program
 {
-    fixed (byte* ptr = &"Hello"u8[0])
+    public static unsafe void Main(string[] args)
     {
-        var view = new Utf8StringView(ptr);
-        Console.WriteLine(view.ToString());
-        Console.WriteLine(view.Length);
+        fixed (byte* ptr = &"Hello"u8[0])
+        {
+            var view = new Utf8StringView(ptr);
+            Console.WriteLine(view.ToString());
+            Console.WriteLine(view.Length);
 
-        foreach (var ch in view)
-            Console.WriteLine(ch);
-    }
+            foreach (var ch in view)
+                Console.WriteLine(ch);
+        }
 
-    Console.WriteLine();
+        Console.WriteLine();
 
-    fixed (byte* ptr = &"Привет 🌍"u8[0])
-    {
-        var view = new Utf8StringView(ptr);
-        Console.WriteLine(view.ToString());
-        Console.WriteLine(view.Length);
+        fixed (byte* ptr = &"Привет 🌍"u8[0])
+        {
+            var view = new Utf8StringView(ptr);
+            Console.WriteLine(view.ToString());
+            Console.WriteLine(view.Length);
 
-        foreach (var ch in view)
-            Console.WriteLine(ch);
-    }
+            foreach (var ch in view)
+                Console.WriteLine(ch);
+        }
 
-    Console.WriteLine();
+        Console.WriteLine();
 
-    {
-        var path = new Utf8CString(Marshal.StringToCoTaskMemUTF8("path/67/файла/из/win/api/func"));
-        var view = path.AsView();
-        var slice = view[0..4];
-        slice.Fill((byte)'*');
+        {
+            var path = new Utf8CString(Marshal.StringToCoTaskMemUTF8("path/67/файла/из/win/api/func"));
+            var view = path.AsView();
+            var slice = view[0..4];
+            slice.Fill((byte)'*');
 
-        Console.WriteLine(path);
-
-        GeneratorTest.SayHello();
+            Console.WriteLine(path);
+        }
     }
 }

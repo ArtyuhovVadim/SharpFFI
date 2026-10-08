@@ -7,8 +7,9 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\SharpFFI.Generators.Cpp\SharpFFI.Generators.Cpp.csproj" OutputItemType="Analyzer" />
-        <ProjectReference Include="..\SharpFFI.Generators.C\SharpFFI.Generators.C.csproj" OutputItemType="Analyzer" />
         <ProjectReference Include="..\SharpFFI.Primitives\SharpFFI.Primitives.csproj" />
+        <ProjectReference Include="..\SharpFFI.Generators.Core\SharpFFI.Generators.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\SharpFFI.Generators.C\SharpFFI.Generators.C.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\SharpFFI.Generators.Cpp\SharpFFI.Generators.Cpp.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 </Project>
