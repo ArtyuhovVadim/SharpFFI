@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using SharpFFI;
 using SharpFFI.Primitives.Utf8;
 
 /*
@@ -58,5 +59,7 @@ unsafe
         slice.Fill((byte)'*');
 
         Console.WriteLine(path);
+
+        GeneratorTest.SayHello();
     }
 }
