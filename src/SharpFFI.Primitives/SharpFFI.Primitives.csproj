@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <LangVersion>12</LangVersion>
+        <LangVersion>14</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="IndexRange" Version="1.1.1" />
+    </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\SharpFFI.Polyfills\SharpFFI.Polyfills.csproj" />
     </ItemGroup>

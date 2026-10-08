@@ -10,6 +10,24 @@ using System.Text;
 
 namespace SharpFFI.Primitives.Utf8;
 
+public static unsafe class SpanExtensions
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static T* AsPointer<T>(this ReadOnlySpan<T> span) where T : unmanaged => (T*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(span));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static T* AsPointer<T>(this Span<T> span) where T : unmanaged => (T*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(span));
+}
+
+public static unsafe class EncodingExtensions
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string GetString(this Encoding encoding, ReadOnlySpan<byte> bytes) => encoding.GetString(bytes.AsPointer(), bytes.Length);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetBytes(this Encoding encoding, ReadOnlySpan<char> chars, Span<byte> bytes) => encoding.GetBytes(chars.AsPointer(), chars.Length, bytes.AsPointer(), bytes.Length);
+}
+
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
 public readonly unsafe ref struct Utf8ScopedCString
@@ -39,7 +57,7 @@ public readonly unsafe ref struct Utf8ScopedCString
         {
             _rentedBuffer = ArrayPool<byte>.Shared.Rent(valueBytesCount);
             _gcBufferHandle = GCHandle.Alloc(_rentedBuffer, GCHandleType.Pinned);
-            _span = _rentedBuffer[..valueBytesCount];
+            _span = _rentedBuffer.AsSpan(0, valueBytesCount);
         }
 
         Encoding.UTF8.GetBytes(value, _span);
@@ -108,7 +126,7 @@ public readonly unsafe ref struct Utf8ScopedCString
     public static bool operator !=(Utf8ScopedCString left, Utf8ScopedCString right) => !left.Equals(right);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator ReadOnlyUtf8CString(Utf8ScopedCString str) => new(str._span.IsEmpty ? null : (byte*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(str._span)));
+    public static implicit operator ReadOnlyUtf8CString(Utf8ScopedCString str) => new(str._span.IsEmpty ? null : str._span.AsPointer());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly void Dispose()

@@ -255,7 +255,7 @@ namespace System.Text
             }
         }
 #else
-        private static Rune ChangeCaseCultureAware(Rune rune, CultureInfo culture, bool toUpper)
+        private static Rune ChangeCaseCultureAware(Rune rune, CultureInfo? culture, bool toUpper)
         {
             Debug.Assert(culture != null, "This should've been checked by the caller.");
 
@@ -774,7 +774,7 @@ namespace System.Text
             return bytesWritten;
         }
 
-        public override bool Equals([NotNullWhen(true)] object? obj) => (obj is Rune other) && Equals(other);
+        public override bool Equals(object? obj) => (obj is Rune other) && Equals(other);
 
         public bool Equals(Rune other) => this == other;
 
@@ -1409,7 +1409,7 @@ namespace System.Text
 #endif
         }
 
-        public static Rune ToLower(Rune value, CultureInfo culture)
+        public static Rune ToLower(Rune value, CultureInfo? culture)
         {
             if (culture is null)
             {
@@ -1527,16 +1527,12 @@ namespace System.Text
 #endif
         }
 
-        [DoesNotReturn]
         private static void ThrowArgumentOutOfRangeException_ch() => throw new ArgumentOutOfRangeException("ch");
 
-        [DoesNotReturn]
         private static void ThrowArgumentOutOfRangeException_value() => throw new ArgumentOutOfRangeException("value");
 
-        [DoesNotReturn]
         private static void ThrowArgumentNullException_culture() => throw new ArgumentNullException("culture");
 
-        [DoesNotReturn]
         private static void ThrowArgumentException_destination() => throw new ArgumentException("Destination is too short", "destination");
     }
 }
