@@ -5,28 +5,11 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using SharpFFI.Primitives.Extensions;
 
 #pragma warning disable CS0809
 
 namespace SharpFFI.Primitives.Utf8;
-
-public static unsafe class SpanExtensions
-{
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T* AsPointer<T>(this ReadOnlySpan<T> span) where T : unmanaged => (T*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(span));
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T* AsPointer<T>(this Span<T> span) where T : unmanaged => (T*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(span));
-}
-
-public static unsafe class EncodingExtensions
-{
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetString(this Encoding encoding, ReadOnlySpan<byte> bytes) => encoding.GetString(bytes.AsPointer(), bytes.Length);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetBytes(this Encoding encoding, ReadOnlySpan<char> chars, Span<byte> bytes) => encoding.GetBytes(chars.AsPointer(), chars.Length, bytes.AsPointer(), bytes.Length);
-}
 
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
@@ -129,7 +112,7 @@ public readonly unsafe ref struct Utf8ScopedCString
     public static implicit operator ReadOnlyUtf8CString(Utf8ScopedCString str) => new(str._span.IsEmpty ? null : str._span.AsPointer());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly void Dispose()
+    public void Dispose()
     {
         if (_rentedBuffer is null)
             return;

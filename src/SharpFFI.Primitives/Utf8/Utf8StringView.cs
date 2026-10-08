@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using SharpFFI.Primitives.Extensions;
 
 #pragma warning disable CS0809
 

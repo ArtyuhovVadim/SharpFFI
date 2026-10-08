@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using SharpFFI.Primitives.Extensions;
 
 namespace SharpFFI.Primitives.Utf8;
 
@@ -10,7 +11,7 @@ namespace SharpFFI.Primitives.Utf8;
 [StructLayout(LayoutKind.Sequential)]
 public readonly unsafe struct ReadOnlyUtf8CString : IEquatable<ReadOnlyUtf8CString>
 {
-    public static readonly ReadOnlyUtf8CString Null = default;
+    public static readonly ReadOnlyUtf8CString Null;
 
     public readonly byte* Pointer;
 
