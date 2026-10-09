@@ -10,4 +10,10 @@ public static class SpanHashExtensions
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int GetMarvinHash(this Span<byte> span) => Marvin.ComputeHash32(span, Marvin.DefaultSeed);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetMarvinHash(this ReadOnlySpan<char> span) => Marvin.ComputeHash32(span, Marvin.DefaultSeed);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetMarvinHash(this Span<char> span) => Marvin.ComputeHash32(span, Marvin.DefaultSeed);
 }

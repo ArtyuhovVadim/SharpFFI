@@ -1,8 +1,8 @@
 ﻿using SharpFFI.Annotations;
 using SharpFFI.Primitives.Utf8;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
+using SharpFFI.Primitives.Utf16;
 
 /*
  * Базовые типы:
@@ -29,10 +29,8 @@ using System.Runtime.InteropServices;
 
 namespace SharpFFI.Test;
 
-
-
 [StructLayout(LayoutKind.Sequential)]
-public struct aboba
+public struct Aboba
 {
     public int hahaha;
     public Utf8FixedCString67 name;
@@ -51,6 +49,17 @@ public static class Program
 {
     public static unsafe void Main(string[] args)
     {
+        fixed (char* ptr = "Hello 🌍🌍🌍 Привет")
+        {
+            var view = new Utf16StringView(ptr);
+            Console.WriteLine(view.ToString());
+            Console.WriteLine(view.Length);
+
+            foreach (var ch in view)
+                Console.WriteLine(ch);
+        }
+
+
         fixed (byte* ptr = &"Hello"u8[0])
         {
             var view = new Utf8StringView(ptr);
