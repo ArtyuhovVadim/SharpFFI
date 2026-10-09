@@ -13,6 +13,7 @@ using SharpFFI.Primitives.Utf16;
  *   Посмотреть на Utf8StringMarshaller
  *   Добавить интеграцию с стандартным генератором marshaller'ов (LibraryImport)
  *   Оптимизировать как в Utf8StringMarshaller
+ *   SpanRuneEnumerator
  *
  * Генератор:
  *   Строки фиксированного размера struct Player { int id; char name[64]; }; [InlineArray]?

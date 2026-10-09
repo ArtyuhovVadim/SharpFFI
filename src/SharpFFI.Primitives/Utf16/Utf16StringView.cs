@@ -83,7 +83,7 @@ public readonly unsafe ref struct Utf16StringView(Span<char> span)
     public bool Equals(Utf16StringView other) => Span == other.Span || Span.SequenceEqual(other.Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf16CharEnumerator GetEnumerator() => new(Span);
+    public ReadOnlySpan<char>.Enumerator GetEnumerator() => ((ReadOnlySpan<char>)Span).GetEnumerator();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString() => Span.ToString();

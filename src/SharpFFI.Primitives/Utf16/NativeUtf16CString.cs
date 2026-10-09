@@ -17,10 +17,11 @@ public unsafe class NativeUtf16CString : IEquatable<NativeUtf16CString>, IDispos
         if (value is null)
             return;
 
-        _pointer = (char*)Marshal.AllocHGlobal(value.Length + 1);
-        _length = value.Length - 1;
-        value.AsSpan().CopyTo(new Span<char>(_pointer, value.Length));
-        _pointer[value.Length - 1] = '\0';
+        var bytesCount = (value.Length + 1) * sizeof(char);
+        _pointer = (char*)Marshal.AllocHGlobal(bytesCount);
+        _length = value.Length;
+        value.AsSpan().CopyTo(new Span<char>(_pointer, _length));
+        _pointer[_length] = '\0';
     }
 
     private Span<char> Span
