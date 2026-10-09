@@ -56,7 +56,7 @@ public unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, IDisposab
     public override bool Equals(object? obj) => obj is NativeUtf8CString other && Equals(other);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => _pointer is null ? 0 : Marvin.ComputeHash32(Span, Marvin.DefaultSeed);
+    public override int GetHashCode() => _pointer is null ? 0 : AsReadOnlyView().Span.GetMarvinHash();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(NativeUtf8CString? other)

@@ -51,7 +51,7 @@ public readonly unsafe struct Utf8CString : IEquatable<Utf8CString>
     public override bool Equals(object? obj) => obj is Utf8CString other && Equals(other);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => Pointer is null ? 0 : Marvin.ComputeHash32(AsView(), Marvin.DefaultSeed);
+    public override int GetHashCode() => Pointer is null ? 0 : AsReadOnlyView().Span.GetMarvinHash();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString() => Encoding.UTF8.GetString(AsView().Span);

@@ -1,6 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using SharpFFI.Annotations;
+﻿using SharpFFI.Annotations;
 using SharpFFI.Primitives.Utf8;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 /*
  * Базовые типы:
@@ -26,6 +28,21 @@ using SharpFFI.Primitives.Utf8;
  */
 
 namespace SharpFFI.Test;
+
+
+
+[StructLayout(LayoutKind.Sequential)]
+public struct aboba
+{
+    public int hahaha;
+    public Utf8FixedCString67 name;
+
+    [FixedString]
+    public partial struct Utf8FixedCString67;
+}
+
+[FixedString]
+public partial struct ReadOnlyUtf8FixedCString228;
 
 [Handle]
 public readonly partial struct GlWindow;
