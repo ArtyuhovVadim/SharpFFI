@@ -56,7 +56,7 @@ public unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, IDisposab
     public override bool Equals(object? obj) => obj is NativeUtf8CString other && Equals(other);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => _pointer is null ? 0 : AsReadOnlyView().Span.GetMarvinHash();
+    public override int GetHashCode() => _pointer is null ? 0 : Span.GetMarvinHash();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(NativeUtf8CString? other)
@@ -69,7 +69,7 @@ public unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, IDisposab
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => Encoding.UTF8.GetString(AsReadOnlyView().Span);
+    public override string ToString() => Encoding.UTF8.GetString(Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(NativeUtf8CString? left, NativeUtf8CString? right)

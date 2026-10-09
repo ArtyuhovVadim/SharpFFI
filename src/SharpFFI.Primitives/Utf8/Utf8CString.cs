@@ -44,7 +44,7 @@ public readonly unsafe struct Utf8CString : IEquatable<Utf8CString>
     {
         if (Pointer == other.Pointer) return true;
         if (Pointer == null || other.Pointer == null) return false;
-        return AsView().Equals(other.AsView());
+        return AsReadOnlyView().Equals(other.AsReadOnlyView());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -54,7 +54,7 @@ public readonly unsafe struct Utf8CString : IEquatable<Utf8CString>
     public override int GetHashCode() => Pointer is null ? 0 : AsReadOnlyView().Span.GetMarvinHash();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => Encoding.UTF8.GetString(AsView().Span);
+    public override string ToString() => Encoding.UTF8.GetString(AsReadOnlyView().Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(Utf8CString left, Utf8CString right) => left.Equals(right);
