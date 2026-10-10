@@ -1,8 +1,10 @@
-﻿#nullable enable
+#nullable enable
 
+using System;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,6 +15,15 @@ namespace SharpFFI.Generators.C;
 public readonly record struct FixedStringGenerationContext(string StructNamespace, string StructName, int Size, bool IsReadOnly, Location? Location, DiagnosticDescriptor? Diagnostic)
 {
     public bool IsGlobalNamespace => string.IsNullOrEmpty(StructNamespace);
+
+    public bool Equals(FixedStringGenerationContext other) =>
+        StructNamespace == other.StructNamespace &&
+        StructName == other.StructName &&
+        Size == other.Size &&
+        IsReadOnly == other.IsReadOnly &&
+        EqualityComparer<DiagnosticDescriptor?>.Default.Equals(Diagnostic, other.Diagnostic);
+
+    public override int GetHashCode() => HashCode.Combine(StructNamespace, StructName, Size, IsReadOnly, Diagnostic);
 }
 
 [Generator(LanguageNames.CSharp)]

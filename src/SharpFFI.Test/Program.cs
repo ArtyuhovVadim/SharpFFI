@@ -1,32 +1,10 @@
-﻿using SharpFFI.Annotations;
+using SharpFFI.Annotations;
 using SharpFFI.Primitives.Utf8;
 using System.Runtime.InteropServices;
 using System.Text;
 using SharpFFI.Primitives.Utf16;
 
-/*
- * Базовые типы:
- *   Массив строк?
- *   Обертка над динамическим массивом и просто массивом (данные + длина) или срез
- *   Поддержка NativeAAot
- *   Добавить поддержку конкретных фреймворков и использовать их фичи для улучшения производительности
- *   Посмотреть на Utf8StringMarshaller
- *   Добавить интеграцию с стандартным генератором marshaller'ов (LibraryImport)
- *   Оптимизировать как в Utf8StringMarshaller
- *   SpanRuneEnumerator
- *
- * Генератор:
- *   Строки фиксированного размера struct Player { int id; char name[64]; }; [InlineArray]?
- *   Создать аттрибут для генерации Opaque Pointers, в c# и c/c++ опциональн+о
- *   C Union -> c# union или костыльную структуру на более ранних версиях
- *   Автоматическая генерация экспортируемых функций с поддержкой моих типов?
- *   Автоматический маппинг VTable
- *   Генерация C++ Flattening Wrapper'а на си
- *   Массивы фиксированного размера?
- *
- * С/С++:
- *   Написать хедер онли библиотеку, которая будет повторять структуры из си шарпа и содержать в себе все необходимые функции
- */
+
 
 namespace SharpFFI.Test;
 
@@ -93,5 +71,7 @@ public static class Program
 
             Console.WriteLine(path);
         }
+
+        Console.WriteLine();
     }
 }

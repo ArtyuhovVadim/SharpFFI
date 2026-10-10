@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -40,7 +40,7 @@ public unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, IDisposab
     public int Length
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Span.IsEmpty ? 0 : Span.Length - 1;
+        get => Span.Length;
     }
 
     public bool IsEmpty
