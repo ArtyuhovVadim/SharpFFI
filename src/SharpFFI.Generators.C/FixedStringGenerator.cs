@@ -1,10 +1,7 @@
 #nullable enable
 
-using System;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

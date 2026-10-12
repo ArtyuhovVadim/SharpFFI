@@ -1,10 +1,7 @@
-using SharpFFI.Annotations;
-using SharpFFI.Primitives.Utf8;
 using System.Runtime.InteropServices;
-using System.Text;
+using SharpFFI.Annotations;
 using SharpFFI.Primitives.Utf16;
-
-
+using SharpFFI.Primitives.Utf8;
 
 namespace SharpFFI.Test;
 

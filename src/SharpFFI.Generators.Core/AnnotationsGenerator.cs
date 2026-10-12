@@ -17,7 +17,7 @@ public class AnnotationsGenerator : IIncrementalGenerator
                                          using System;
 
                                          namespace SharpFFI.Annotations;
-                                          
+                                         
                                          [AttributeUsage(AttributeTargets.Struct)]
                                          internal class HandleAttribute : Attribute;
                                          
