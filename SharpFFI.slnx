@@ -9,6 +9,10 @@
     <File Path="NuGet.config" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/docs/">
+    <File Path="docs/project_info.md" />
+    <File Path="docs/TODO.md" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/SharpFFI.Primitives/SharpFFI.Primitives.csproj" />
     <Project Path="src/SharpFFI.Test/SharpFFI.Test.csproj" />
