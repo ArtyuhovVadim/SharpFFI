@@ -31,6 +31,7 @@ public readonly struct Bool8 : IEquatable<Bool8>, IComparable<Bool8>, IComparabl
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(Bool8 other) => (Value != 0 ? 1 : 0).CompareTo(other.Value != 0 ? 1 : 0);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(object? obj)
     {
         if (obj is null) return 1;

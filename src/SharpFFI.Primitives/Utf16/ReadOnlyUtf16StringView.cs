@@ -16,16 +16,22 @@ public readonly unsafe ref struct ReadOnlyUtf16StringView(ReadOnlySpan<char> spa
 
     public readonly ReadOnlySpan<char> Span = span;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf16StringView(char* pointer, int length) : this(pointer is null ? ReadOnlySpan<char>.Empty : new ReadOnlySpan<char>(pointer, length)) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf16StringView(char* pointer) : this(pointer, pointer is null ? 0 : SpanHelpers.IndexOfNullCharacter(pointer)) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf16StringView(nint pointer, int length) : this((char*)pointer, length) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf16StringView(nint pointer) : this((char*)pointer) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf16StringView(Utf16CString str) : this(str.Pointer) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf16StringView(ReadOnlyUtf16CString str) : this(str.Pointer) { }
 
     public ref readonly char this[int index]

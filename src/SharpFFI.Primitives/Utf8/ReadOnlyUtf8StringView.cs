@@ -18,16 +18,22 @@ public readonly unsafe ref struct ReadOnlyUtf8StringView(ReadOnlySpan<byte> span
 
     public readonly ReadOnlySpan<byte> Span = span;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf8StringView(byte* pointer, int length) : this(pointer is null ? ReadOnlySpan<byte>.Empty : new ReadOnlySpan<byte>(pointer, length)) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf8StringView(byte* pointer) : this(pointer, pointer is null ? 0 : SpanHelpers.IndexOfNullByte(pointer)) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf8StringView(nint pointer, int length) : this((byte*)pointer, length) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf8StringView(nint pointer) : this((byte*)pointer) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf8StringView(Utf8CString str) : this(str.Pointer) { }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf8StringView(ReadOnlyUtf8CString str) : this(str.Pointer) { }
 
     public ref readonly byte this[int index]

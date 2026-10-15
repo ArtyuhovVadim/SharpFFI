@@ -20,6 +20,7 @@ public readonly struct Bool32 : IEquatable<Bool32>, IComparable<Bool32>, ICompar
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(Bool32 other) => Value != 0 == (other.Value != 0);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool Equals(object? obj) => obj is Bool32 other && Equals(other);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -31,6 +32,7 @@ public readonly struct Bool32 : IEquatable<Bool32>, IComparable<Bool32>, ICompar
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(Bool32 other) => (Value != 0 ? 1 : 0).CompareTo(other.Value != 0 ? 1 : 0);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(object? obj)
     {
         if (obj is null) return 1;
