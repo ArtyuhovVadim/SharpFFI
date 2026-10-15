@@ -4,15 +4,11 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-        <PackageReference Include="IndexRange" />
         <PackageReference Include="System.Memory" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'">
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'">
-        <ProjectReference Include="..\SharpFFI.Polyfills\SharpFFI.Polyfills.csproj" />
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
     </ItemGroup>
 </Project>

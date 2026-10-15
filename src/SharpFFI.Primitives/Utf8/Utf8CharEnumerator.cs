@@ -1,5 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text;
+using System.Runtime.CompilerServices;
+using SharpFFI.Primitives.Extensions;
 
 namespace SharpFFI.Primitives.Utf8;
 
@@ -17,6 +17,7 @@ public ref struct Utf8CharEnumerator(ReadOnlySpan<byte> view)
         get => _current;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool MoveNext()
     {
         if (_hasPending)
@@ -29,20 +30,16 @@ public ref struct Utf8CharEnumerator(ReadOnlySpan<byte> view)
         if (_remaining.IsEmpty)
             return false;
 
-        Rune.DecodeFromUtf8(_remaining, out var rune, out var bytesConsumed);
-        _remaining = _remaining[bytesConsumed..];
+        UnicodeUtility.DecodeScalarFromUtf8(_remaining, out var scalarValue, out var bytesConsumed);
+        _remaining = _remaining.Slice(bytesConsumed);
 
-        if (rune.IsBmp)
+        if (UnicodeUtility.IsBmpCodePoint(scalarValue))
         {
-            _current = (char)rune.Value;
+            _current = (char)scalarValue;
         }
         else
         {
-            Span<char> buffer = stackalloc char[2];
-            rune.EncodeToUtf16(buffer);
-
-            _current = buffer[0];
-            _pendingLowSurrogate = buffer[1];
+            UnicodeUtility.GetUtf16SurrogatesFromSupplementaryPlaneScalar(scalarValue, out _current, out _pendingLowSurrogate);
             _hasPending = true;
         }
 

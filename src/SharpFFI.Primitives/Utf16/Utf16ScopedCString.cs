@@ -23,7 +23,7 @@ public unsafe ref struct Utf16ScopedCString
         var indexOfNullTerminator = value.IndexOf('\0');
 
         if (indexOfNullTerminator >= 0)
-            value = value[..indexOfNullTerminator];
+            value = value.Slice(0, indexOfNullTerminator);
 
         var exactCharsCount = value.Length + 1;
         var heapAllocated = exactCharsCount > pinnedBuffer.Length;

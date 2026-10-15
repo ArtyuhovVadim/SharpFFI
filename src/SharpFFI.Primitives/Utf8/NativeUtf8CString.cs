@@ -17,7 +17,7 @@ public sealed unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, ID
         var indexOfNullTerminator = value.IndexOf('\0');
 
         if (indexOfNullTerminator >= 0)
-            value = value[..indexOfNullTerminator];
+            value = value.Slice(0, indexOfNullTerminator);
 
         var exactBytesCount = FrameworkExtensions.GetUtf8BytesCount(value) + 1;
         var pointer = FrameworkExtensions.NativeAlloc<byte>((nuint)exactBytesCount);
@@ -36,7 +36,7 @@ public sealed unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, ID
         var indexOfNullTerminator = value.IndexOf((byte)0);
 
         if (indexOfNullTerminator >= 0)
-            value = value[..indexOfNullTerminator];
+            value = value.Slice(0, indexOfNullTerminator);
 
         var exactBytesCount = value.Length + 1;
         var pointer = FrameworkExtensions.NativeAlloc<byte>((nuint)exactBytesCount);

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -25,7 +25,7 @@ public unsafe ref struct Utf8ScopedCString
         var indexOfNullTerminator = value.IndexOf('\0');
 
         if (indexOfNullTerminator >= 0)
-            value = value[..indexOfNullTerminator];
+            value = value.Slice(0, indexOfNullTerminator);
 
         if (MaxUtf8BytesPerChar * value.Length < pinnedBuffer.Length)
         {
@@ -56,7 +56,7 @@ public unsafe ref struct Utf8ScopedCString
         var indexOfNullTerminator = value.IndexOf((byte)0);
 
         if (indexOfNullTerminator >= 0)
-            value = value[..indexOfNullTerminator];
+            value = value.Slice(0, indexOfNullTerminator);
 
         var exactBytesCount = value.Length + 1;
         var heapAllocated = exactBytesCount > pinnedBuffer.Length;

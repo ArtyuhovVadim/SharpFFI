@@ -10,7 +10,6 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/SharpFFI.Polyfills/SharpFFI.Polyfills.csproj" />
     <Project Path="src/SharpFFI.Primitives/SharpFFI.Primitives.csproj" />
     <Project Path="src/SharpFFI.Test/SharpFFI.Test.csproj" />
     <Project Path="src/SharpFFI.Generators.Core/SharpFFI.Generators.Core.csproj" />

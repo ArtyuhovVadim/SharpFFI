@@ -17,7 +17,7 @@ public sealed unsafe class NativeUtf16CString : IEquatable<NativeUtf16CString>, 
         var indexOfNullTerminator = value.IndexOf('\0');
 
         if (indexOfNullTerminator >= 0)
-            value = value[..indexOfNullTerminator];
+            value = value.Slice(0, indexOfNullTerminator);
 
         var exactBytesCount = (value.Length + 1) * sizeof(char);
         var pointer = FrameworkExtensions.NativeAlloc<char>((nuint)exactBytesCount);
