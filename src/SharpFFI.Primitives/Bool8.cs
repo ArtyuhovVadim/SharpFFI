@@ -19,7 +19,8 @@ public readonly struct Bool8 : IEquatable<Bool8>, IComparable<Bool8>, IComparabl
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(Bool8 other) => Value != 0 == (other.Value != 0);
-
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool Equals(object? obj) => obj is Bool8 other && Equals(other);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
 using SharpFFI.Primitives.Extensions;
 
 namespace SharpFFI.Primitives.Utf8;
@@ -10,20 +9,29 @@ namespace SharpFFI.Primitives.Utf8;
 [StructLayout(LayoutKind.Sequential)]
 public readonly unsafe struct ReadOnlyUtf8CString : IEquatable<ReadOnlyUtf8CString>
 {
-    public static readonly ReadOnlyUtf8CString Null;
+    public static ReadOnlyUtf8CString Null => default;
 
     public readonly byte* Pointer;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8CString(byte* pointer) => Pointer = pointer;
+    public static ReadOnlyUtf8CString FromPointer(byte* pointer) => new(pointer);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8CString(nint pointer) => Pointer = (byte*)pointer;
+    public static ReadOnlyUtf8CString FromPointer(nint pointer) => new((byte*)pointer);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private ReadOnlyUtf8CString(byte* pointer) => Pointer = pointer;
+
+    public bool IsNull
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => Pointer is null;
+    }
 
     public bool IsEmpty
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Pointer is null;
+        get => Pointer is null || *Pointer == 0;
     }
 
     public ref readonly byte this[int index]
@@ -33,13 +41,13 @@ public readonly unsafe struct ReadOnlyUtf8CString : IEquatable<ReadOnlyUtf8CStri
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8StringView AsReadOnlyView() => new(Pointer);
+    public ReadOnlyUtf8StringView AsReadOnlyView() => ReadOnlyUtf8StringView.FromPointer(Pointer);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(ReadOnlyUtf8CString other)
     {
         if (Pointer == other.Pointer) return true;
-        if (Pointer == null || other.Pointer == null) return false;
+        if (Pointer is null || other.Pointer is null) return false;
         return AsReadOnlyView().Equals(other.AsReadOnlyView());
     }
 
@@ -47,10 +55,10 @@ public readonly unsafe struct ReadOnlyUtf8CString : IEquatable<ReadOnlyUtf8CStri
     public override bool Equals(object? obj) => obj is ReadOnlyUtf8CString other && Equals(other);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => Pointer is null ? 0 : AsReadOnlyView().Span.GetMarvinHash();
+    public override int GetHashCode() => FrameworkExtensions.GetHashCode(AsReadOnlyView());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => Encoding.UTF8.GetString(AsReadOnlyView().Span);
+    public override string ToString() => FrameworkExtensions.ToString(AsReadOnlyView());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(ReadOnlyUtf8CString left, ReadOnlyUtf8CString right) => left.Equals(right);

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using SharpFFI.Primitives.Extensions;
 
 #pragma warning disable CS0809
 
@@ -9,27 +10,35 @@ namespace SharpFFI.Primitives.Utf16;
 
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
-[method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public readonly unsafe ref struct Utf16StringView(Span<char> span)
+public readonly unsafe ref struct Utf16StringView
 {
-    public static Utf16StringView Null => default;
+    public static Utf16StringView Empty => default;
 
-    public readonly Span<char> Span = span;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf16StringView(char* pointer, int length) : this(pointer is null ? Span<char>.Empty : new Span<char>(pointer, length)) { }
+    public readonly Span<char> Span;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf16StringView(char* pointer) : this(pointer, pointer is null ? 0 : SpanHelpers.IndexOfNullCharacter(pointer)) { }
+    public static Utf16StringView FromUtf16Span(Span<char> value) => new(value);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf16StringView(nint pointer, int length) : this((char*)pointer, length) { }
+    public static Utf16StringView FromPointerLength(char* pointer, int length) => new(pointer, length);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf16StringView(nint pointer) : this((char*)pointer) { }
+    public static Utf16StringView FromPointerLength(nint pointer, int length) => new((char*)pointer, length);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf16StringView(Utf16CString str) : this(str.Pointer) { }
+    public static Utf16StringView FromPointer(char* pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated(pointer));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Utf16StringView FromPointer(nint pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated((char*)pointer));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Utf16StringView FromUtf16CString(Utf16CString value) => new(FrameworkExtensions.CreateSpanFromNullTerminated(value.Pointer));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private Utf16StringView(Span<char> value) => Span = value;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private Utf16StringView(char* pointer, int length) => Span = new Span<char>(pointer, length);
 
     public ref char this[int index]
     {
@@ -62,7 +71,7 @@ public readonly unsafe ref struct Utf16StringView(Span<char> span)
     public bool TryCopyTo(Utf16StringView destination) => Span.TryCopyTo(destination.Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf16StringView Slice(int start) => new(Span[start..]);
+    public Utf16StringView Slice(int start) => new(Span.Slice(start));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Utf16StringView Slice(int start, int length) => new(Span.Slice(start, length));
@@ -85,7 +94,7 @@ public readonly unsafe ref struct Utf16StringView(Span<char> span)
     public ReadOnlySpan<char>.Enumerator GetEnumerator() => ((ReadOnlySpan<char>)Span).GetEnumerator();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => Span.ToString();
+    public override string ToString() => FrameworkExtensions.ToString(Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(Utf16StringView left, Utf16StringView right) => left.Equals(right);
@@ -103,5 +112,5 @@ public readonly unsafe ref struct Utf16StringView(Span<char> span)
     public static implicit operator Utf16StringView(Span<char> span) => new(span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator ReadOnlyUtf16StringView(Utf16StringView view) => new(view.Span);
+    public static implicit operator ReadOnlyUtf16StringView(Utf16StringView view) => ReadOnlyUtf16StringView.FromUtf16Span(view.Span);
 }

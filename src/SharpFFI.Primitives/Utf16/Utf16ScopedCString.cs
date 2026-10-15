@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -11,94 +10,82 @@ namespace SharpFFI.Primitives.Utf16;
 
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
-public readonly unsafe ref struct Utf16ScopedCString
+public unsafe ref struct Utf16ScopedCString
 {
-    private readonly Span<char> _span;
-    private readonly char[]? _rentedBuffer;
-    private readonly GCHandle _gcBufferHandle;
+    private char* _pointer;
+    private int _length;
+    private bool _heapAllocated;
 
-    public Utf16ScopedCString(string? value, Span<char> buffer = default)
+    public static Utf16ScopedCString FromString(string value, Span<char> pinnedBuffer = default) => value is null ? throw new ArgumentNullException(nameof(value)) : FromUtf16Span(value, pinnedBuffer);
+
+    public static Utf16ScopedCString FromUtf16Span(ReadOnlySpan<char> value, Span<char> pinnedBuffer = default)
     {
-        if (value is null)
-        {
-            _span = default;
-            _rentedBuffer = null;
-            _gcBufferHandle = default;
-            return;
-        }
+        var indexOfNullTerminator = value.IndexOf('\0');
 
-        var length = value.Length + 1;
+        if (indexOfNullTerminator >= 0)
+            value = value[..indexOfNullTerminator];
 
-        if (buffer.Length >= length)
-        {
-            _rentedBuffer = null;
-            _span = buffer[..length];
-        }
-        else
-        {
-            _rentedBuffer = ArrayPool<char>.Shared.Rent(length);
-            _gcBufferHandle = GCHandle.Alloc(_rentedBuffer, GCHandleType.Pinned);
-            _span = _rentedBuffer.AsSpan(0, length);
-        }
+        var exactCharsCount = value.Length + 1;
+        var heapAllocated = exactCharsCount > pinnedBuffer.Length;
+        var pointer = heapAllocated ? FrameworkExtensions.NativeAlloc<char>((nuint)exactCharsCount * sizeof(char)) : pinnedBuffer.AsPointer();
+        var length = value.Length;
 
-        value.AsSpan().CopyTo(_span);
-        _span[length - 1] = '\0';
-    }
+        var result = new Utf16ScopedCString(pointer, length, heapAllocated);
 
-    public Utf16ScopedCString(ReadOnlySpan<char> value, Span<char> buffer = default)
-    {
-        var length = value.Length + 1;
+        value.CopyTo(result.Span);
+        pointer[length] = '\0';
 
-        if (buffer.Length >= length)
-        {
-            _rentedBuffer = null;
-            _span = buffer[..length];
-        }
-        else
-        {
-            _rentedBuffer = ArrayPool<char>.Shared.Rent(length);
-            _gcBufferHandle = GCHandle.Alloc(_rentedBuffer, GCHandleType.Pinned);
-            _span = _rentedBuffer.AsSpan(0, length);
-        }
-
-        value.CopyTo(_span);
-        _span[length - 1] = '\0';
-    }
-
-    public ref readonly char this[int index]
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => ref _span[index];
-    }
-
-    public int Length
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _span.IsEmpty ? 0 : _span.Length - 1;
-    }
-
-    public bool IsEmpty
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _span.IsEmpty;
+        return result;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf16StringView AsReadOnlyView() => new(_span.IsEmpty ? default : _span[..^1]);
+    private Utf16ScopedCString(char* pointer, int length, bool heapAllocated)
+    {
+        _pointer = pointer;
+        _length = length;
+        _heapAllocated = heapAllocated;
+    }
+
+    private readonly Span<char> Span
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => new(_pointer, _length);
+    }
+
+    public readonly ref readonly char this[int index]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => ref Span[index];
+    }
+
+    public readonly int Length
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _length;
+    }
+
+    public readonly bool IsEmpty
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => Length == 0;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public readonly ReadOnlyUtf16StringView AsReadOnlyView() => ReadOnlyUtf16StringView.FromPointerLength(_pointer, _length);
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("Equals(object) on ref struct is not supported.", true)]
-    public override bool Equals(object? obj) => throw new NotSupportedException();
+    public readonly override bool Equals(object? obj) => throw new NotSupportedException();
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("GetHashCode() on ref struct is not supported.", true)]
-    public override int GetHashCode() => throw new NotSupportedException();
+    public readonly override int GetHashCode() => throw new NotSupportedException();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(Utf16ScopedCString other) => AsReadOnlyView().Equals(other.AsReadOnlyView());
+    public readonly bool Equals(Utf16ScopedCString other) => AsReadOnlyView().Equals(other.AsReadOnlyView());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => _span.ToString();
+    public readonly override string ToString() => FrameworkExtensions.ToString(Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(Utf16ScopedCString left, Utf16ScopedCString right) => left.Equals(right);
@@ -107,19 +94,18 @@ public readonly unsafe ref struct Utf16ScopedCString
     public static bool operator !=(Utf16ScopedCString left, Utf16ScopedCString right) => !left.Equals(right);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator ReadOnlyUtf16CString(Utf16ScopedCString str) => new(str._span.IsEmpty ? null : str._span.AsPointer());
+    public static implicit operator ReadOnlyUtf16CString(Utf16ScopedCString str) => ReadOnlyUtf16CString.FromPointer(str._pointer);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dispose()
     {
-        if (_rentedBuffer is null)
-            return;
+        if (_heapAllocated)
+        {
+            FrameworkExtensions.NativeFree(_pointer);
+            _heapAllocated = false;
+        }
 
-        ref var handle = ref Unsafe.AsRef(in _gcBufferHandle);
-
-        if (handle.IsAllocated)
-            handle.Free();
-
-        ArrayPool<char>.Shared.Return(_rentedBuffer);
+        _pointer = null;
+        _length = 0;
     }
 }

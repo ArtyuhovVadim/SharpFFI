@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
 using SharpFFI.Primitives.Extensions;
 
 #pragma warning disable CS0809
@@ -11,30 +10,38 @@ namespace SharpFFI.Primitives.Utf8;
 
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
-[method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public readonly unsafe ref struct ReadOnlyUtf8StringView(ReadOnlySpan<byte> span)
+public readonly unsafe ref struct ReadOnlyUtf8StringView
 {
-    public static Utf8StringView Null => default;
+    public static ReadOnlyUtf8StringView Empty => default;
 
-    public readonly ReadOnlySpan<byte> Span = span;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8StringView(byte* pointer, int length) : this(pointer is null ? ReadOnlySpan<byte>.Empty : new ReadOnlySpan<byte>(pointer, length)) { }
+    public readonly ReadOnlySpan<byte> Span;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8StringView(byte* pointer) : this(pointer, pointer is null ? 0 : SpanHelpers.IndexOfNullByte(pointer)) { }
+    public static ReadOnlyUtf8StringView FromUtf8Span(ReadOnlySpan<byte> value) => new(value);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8StringView(nint pointer, int length) : this((byte*)pointer, length) { }
+    public static ReadOnlyUtf8StringView FromPointerLength(byte* pointer, int length) => new(pointer, length);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8StringView(nint pointer) : this((byte*)pointer) { }
+    public static ReadOnlyUtf8StringView FromPointerLength(nint pointer, int length) => new((byte*)pointer, length);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8StringView(Utf8CString str) : this(str.Pointer) { }
+    public static ReadOnlyUtf8StringView FromPointer(byte* pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated(pointer));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8StringView(ReadOnlyUtf8CString str) : this(str.Pointer) { }
+    public static ReadOnlyUtf8StringView FromPointer(nint pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated((byte*)pointer));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ReadOnlyUtf8StringView FromUtf8CString(Utf8CString value) => new(FrameworkExtensions.CreateSpanFromNullTerminated(value.Pointer));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ReadOnlyUtf8StringView FromUtf8CString(ReadOnlyUtf8CString value) => new(FrameworkExtensions.CreateSpanFromNullTerminated(value.Pointer));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private ReadOnlyUtf8StringView(ReadOnlySpan<byte> value) => Span = value;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private ReadOnlyUtf8StringView(byte* pointer, int length) => Span = new ReadOnlySpan<byte>(pointer, length);
 
     public ref readonly byte this[int index]
     {
@@ -61,7 +68,7 @@ public readonly unsafe ref struct ReadOnlyUtf8StringView(ReadOnlySpan<byte> span
     public bool TryCopyTo(Utf8StringView destination) => Span.TryCopyTo(destination.Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyUtf8StringView Slice(int start) => new(Span[start..]);
+    public ReadOnlyUtf8StringView Slice(int start) => new(Span.Slice(start));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlyUtf8StringView Slice(int start, int length) => new(Span.Slice(start, length));
@@ -84,7 +91,7 @@ public readonly unsafe ref struct ReadOnlyUtf8StringView(ReadOnlySpan<byte> span
     public Utf8CharEnumerator GetEnumerator() => new(Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => Encoding.UTF8.GetString(Span);
+    public override string ToString() => FrameworkExtensions.ToString(Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(ReadOnlyUtf8StringView left, ReadOnlyUtf8StringView right) => left.Equals(right);

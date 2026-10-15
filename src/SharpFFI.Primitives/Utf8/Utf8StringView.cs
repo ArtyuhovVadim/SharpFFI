@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
 using SharpFFI.Primitives.Extensions;
 
 #pragma warning disable CS0809
@@ -11,27 +10,35 @@ namespace SharpFFI.Primitives.Utf8;
 
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
-[method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public readonly unsafe ref struct Utf8StringView(Span<byte> span)
+public readonly unsafe ref struct Utf8StringView
 {
-    public static Utf8StringView Null => default;
+    public static Utf8StringView Empty => default;
 
-    public readonly Span<byte> Span = span;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8StringView(byte* pointer, int length) : this(pointer is null ? Span<byte>.Empty : new Span<byte>(pointer, length)) { }
+    public readonly Span<byte> Span;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8StringView(byte* pointer) : this(pointer, pointer is null ? 0 : SpanHelpers.IndexOfNullByte(pointer)) { }
+    public static Utf8StringView FromUtf8Span(Span<byte> value) => new(value);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8StringView(nint pointer, int length) : this((byte*)pointer, length) { }
+    public static Utf8StringView FromPointerLength(byte* pointer, int length) => new(pointer, length);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8StringView(nint pointer) : this((byte*)pointer) { }
+    public static Utf8StringView FromPointerLength(nint pointer, int length) => new((byte*)pointer, length);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8StringView(Utf8CString str) : this(str.Pointer) { }
+    public static Utf8StringView FromPointer(byte* pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated(pointer));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Utf8StringView FromPointer(nint pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated((byte*)pointer));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Utf8StringView FromUtf8CString(Utf8CString value) => new(FrameworkExtensions.CreateSpanFromNullTerminated(value.Pointer));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private Utf8StringView(Span<byte> value) => Span = value;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private Utf8StringView(byte* pointer, int length) => Span = new Span<byte>(pointer, length);
 
     public ref byte this[int index]
     {
@@ -64,7 +71,7 @@ public readonly unsafe ref struct Utf8StringView(Span<byte> span)
     public bool TryCopyTo(Utf8StringView destination) => Span.TryCopyTo(destination.Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8StringView Slice(int start) => new(Span[start..]);
+    public Utf8StringView Slice(int start) => new(Span.Slice(start));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Utf8StringView Slice(int start, int length) => new(Span.Slice(start, length));
@@ -87,7 +94,7 @@ public readonly unsafe ref struct Utf8StringView(Span<byte> span)
     public Utf8CharEnumerator GetEnumerator() => new(Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => Encoding.UTF8.GetString(Span);
+    public override string ToString() => FrameworkExtensions.ToString(Span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(Utf8StringView left, Utf8StringView right) => left.Equals(right);
@@ -105,5 +112,5 @@ public readonly unsafe ref struct Utf8StringView(Span<byte> span)
     public static implicit operator Utf8StringView(Span<byte> span) => new(span);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator ReadOnlyUtf8StringView(Utf8StringView view) => new(view.Span);
+    public static implicit operator ReadOnlyUtf8StringView(Utf8StringView view) => ReadOnlyUtf8StringView.FromUtf8Span(view.Span);
 }
