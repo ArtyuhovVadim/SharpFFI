@@ -26,7 +26,7 @@ public unsafe ref struct Utf16ScopedCString
     /// If the string contains embedded null characters, it is truncated at the first null character.
     /// </summary>
     /// <param name="value">The managed string to copy.</param>
-    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c>.</param>
+    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c> or pinned.</param>
     /// <returns>A new <see cref="Utf16ScopedCString"/> instance.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
     public static Utf16ScopedCString FromString(string value, Span<char> pinnedBuffer = default) => value is null ? throw new ArgumentNullException(nameof(value)) : FromUtf16Span(value, pinnedBuffer);
@@ -37,7 +37,7 @@ public unsafe ref struct Utf16ScopedCString
     /// If the span contains embedded null characters, it is truncated at the first null character.
     /// </summary>
     /// <param name="value">The UTF-16 character span to copy.</param>
-    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c>.</param>
+    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c> or pinned.</param>
     /// <returns>A new <see cref="Utf16ScopedCString"/> instance.</returns>
     public static Utf16ScopedCString FromUtf16Span(ReadOnlySpan<char> value, Span<char> pinnedBuffer = default)
     {

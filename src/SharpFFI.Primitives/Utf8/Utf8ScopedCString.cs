@@ -10,7 +10,7 @@ namespace SharpFFI.Primitives.Utf8;
 
 /// <summary>
 /// Represents a scoped, null-terminated UTF-8 string designed for interop scenarios.
-/// Uses a caller-provided buffer (such as <c>stackalloc</c>) when possible, falling back to unmanaged native memory if the buffer is insufficient.
+/// Uses a caller-provided pinned or <c>stackalloc</c> buffer, falling back to unmanaged native memory if the buffer is insufficient.
 /// </summary>
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
@@ -28,7 +28,7 @@ public unsafe ref struct Utf8ScopedCString
     /// If the string contains embedded null characters, it is truncated at the first null character.
     /// </summary>
     /// <param name="value">The managed string to encode.</param>
-    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c>.</param>
+    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c> or pinned.</param>
     /// <returns>A new <see cref="Utf8ScopedCString"/> instance.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
     public static Utf8ScopedCString FromString(string value, Span<byte> pinnedBuffer = default) => value is null ? throw new ArgumentNullException(nameof(value)) : FromUtf16Span(value, pinnedBuffer);
@@ -39,7 +39,7 @@ public unsafe ref struct Utf8ScopedCString
     /// If the span contains embedded null characters, it is truncated at the first null character.
     /// </summary>
     /// <param name="value">The UTF-16 character span to encode.</param>
-    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c>.</param>
+    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c> or pinned.</param>
     /// <returns>A new <see cref="Utf8ScopedCString"/> instance.</returns>
     public static Utf8ScopedCString FromUtf16Span(ReadOnlySpan<char> value, Span<byte> pinnedBuffer = default)
     {
@@ -78,7 +78,7 @@ public unsafe ref struct Utf8ScopedCString
     /// If the span contains embedded null characters, it is truncated at the first null character.
     /// </summary>
     /// <param name="value">The UTF-8 byte span to copy.</param>
-    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c>.</param>
+    /// <param name="pinnedBuffer">An optional destination buffer, typically allocated on the stack via <c>stackalloc</c> or pinned.</param>
     /// <returns>A new <see cref="Utf8ScopedCString"/> instance.</returns>
     public static Utf8ScopedCString FromUtf8Span(ReadOnlySpan<byte> value, Span<byte> pinnedBuffer = default)
     {
