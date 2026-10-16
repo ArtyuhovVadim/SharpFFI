@@ -15,7 +15,7 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/SharpFFI.Primitives/SharpFFI.Primitives.csproj" />
-    <Project Path="src/SharpFFI.Test/SharpFFI.Test.csproj" />
+    <Project Path="src/SharpFFI.Demo/SharpFFI.Demo.csproj" />
     <Project Path="src/SharpFFI.Primitives.Tests/SharpFFI.Primitives.Tests.csproj" />
     <Project Path="src/SharpFFI.Generators.Core/SharpFFI.Generators.Core.csproj" />
     <Project Path="src/SharpFFI.Generators.C/SharpFFI.Generators.C.csproj" />

@@ -3,6 +3,10 @@
         <OutputType>Exe</OutputType>
         <TargetFrameworks>net48;net8.0;net10.0</TargetFrameworks>
     </PropertyGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+        <PackageReference Include="IndexRange" />
+    </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\SharpFFI.Primitives\SharpFFI.Primitives.csproj"
                           Condition="'$(TargetFramework)' == 'net48'"
