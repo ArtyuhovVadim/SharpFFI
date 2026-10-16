@@ -21,6 +21,8 @@ SharpFFI «переворачивает» этот подход:
     *   Roslyn Source Generators, которые реализуют ту самую идею генерации бойлерплейта по C# атрибутам. Архитектура построена на базе `IIncrementalGenerator` для оптимальной производительности в IDE.
 4.  **`SharpFFI.Demo`**
     *   Проект-демонстрация. Показывает примеры использования примитивов библиотеки (`Bool8`/`Bool32`, `ScopedCString`, `NativeCString`, `CString`, `StringView`).
+5.  **`SharpFFI.Benchmarks`**
+    *   Проект бенчмарков производительности (BenchmarkDotNet) для `SharpFFI.Primitives`. Покрывает замеры CPU и памяти (`[MemoryDiagnoser]`) на `net48`, `net6.0`, `net8.0` и `net10.0`.
 
 ---
 
