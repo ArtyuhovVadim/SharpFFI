@@ -12,4 +12,8 @@
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
     </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="SharpFFI.Primitives.Tests" />
+    </ItemGroup>
 </Project>

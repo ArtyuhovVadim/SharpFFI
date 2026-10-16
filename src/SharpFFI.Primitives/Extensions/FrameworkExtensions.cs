@@ -7,10 +7,10 @@ namespace SharpFFI.Primitives.Extensions;
 internal unsafe static class FrameworkExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetHashCode(ReadOnlySpan<byte> span) => Marvin.ComputeHash32(span, Marvin.DefaultSeed);
+    public static int GetHashCode(ReadOnlySpan<byte> span) => span.IsEmpty ? 0 : Marvin.ComputeHash32(span, Marvin.DefaultSeed);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetHashCode(ReadOnlySpan<char> span) => Marvin.ComputeHash32(MemoryMarshal.AsBytes(span), Marvin.DefaultSeed);
+    public static int GetHashCode(ReadOnlySpan<char> span) => span.IsEmpty ? 0 : Marvin.ComputeHash32(MemoryMarshal.AsBytes(span), Marvin.DefaultSeed);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string ToString(ReadOnlySpan<byte> span)

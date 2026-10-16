@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>net48;net8.0;net10.0</TargetFrameworks>
+        <IsPackable>false</IsPackable>
+        <NoWarn>$(NoWarn);CS1718</NoWarn>
+        <IsTestingPlatformApplication>false</IsTestingPlatformApplication>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="Shouldly" />
+        <PackageReference Include="xunit.v3" />
+        <PackageReference Include="xunit.runner.visualstudio">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+        <PackageReference Include="IndexRange" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\SharpFFI.Primitives\SharpFFI.Primitives.csproj"
+                          Condition="'$(TargetFramework)' == 'net48'"
+                          SetTargetFramework="TargetFramework=netstandard2.0" />
+
+        <ProjectReference Include="..\SharpFFI.Primitives\SharpFFI.Primitives.csproj"
+                          Condition="'$(TargetFramework)' == 'net8.0'"
+                          SetTargetFramework="TargetFramework=netstandard2.1" />
+
+        <ProjectReference Include="..\SharpFFI.Primitives\SharpFFI.Primitives.csproj"
+                          Condition="'$(TargetFramework)' == 'net10.0'"
+                          SetTargetFramework="TargetFramework=net6.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit" />
+        <Using Include="Shouldly" />
+    </ItemGroup>
+
+</Project>
