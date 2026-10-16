@@ -13,6 +13,26 @@
     <File Path="docs/project_info.md" />
     <File Path="docs/TODO.md" />
   </Folder>
+  <Folder Name="/docs/benchmarks/">
+    <File Path="docs/benchmarks/README.md" />
+  </Folder>
+  <Folder Name="/docs/benchmarks/results/">
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.HashingAndEqualityBenchmarks-report-github.md" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.HashingAndEqualityBenchmarks-report.csv" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.HashingAndEqualityBenchmarks-report.html" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.NativeCStringBenchmarks-report-github.md" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.NativeCStringBenchmarks-report.csv" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.NativeCStringBenchmarks-report.html" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.NullTerminatedScanAndDecodeBenchmarks-report-github.md" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.NullTerminatedScanAndDecodeBenchmarks-report.csv" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.NullTerminatedScanAndDecodeBenchmarks-report.html" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.ScopedCStringBenchmarks-report-github.md" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.ScopedCStringBenchmarks-report.csv" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.ScopedCStringBenchmarks-report.html" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.Utf8CharEnumeratorBenchmarks-report-github.md" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.Utf8CharEnumeratorBenchmarks-report.csv" />
+    <File Path="docs/benchmarks/results/SharpFFI.Benchmarks.Utf8CharEnumeratorBenchmarks-report.html" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/SharpFFI.Primitives/SharpFFI.Primitives.csproj" />
     <Project Path="src/SharpFFI.Demo/SharpFFI.Demo.csproj" />

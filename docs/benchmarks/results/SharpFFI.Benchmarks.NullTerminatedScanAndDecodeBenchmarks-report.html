@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>SharpFFI.Benchmarks.NullTerminatedScanAndDecodeBenchmarks-20261016-213436</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26300.9711)
+AMD Ryzen 7 9700X 3.80GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.102
+  [Host]             : .NET 8.0.32 (8.0.32, 8.0.3226.50405), X64 RyuJIT x86-64-v4
+  .NET 10.0          : .NET 10.0.13 (10.0.13, 10.0.1326.50504), X64 RyuJIT x86-64-v4
+  .NET 6.0           : .NET 6.0.36 (6.0.36, 6.0.3624.51421), X64 RyuJIT x86-64-v3
+  .NET 8.0           : .NET 8.0.32 (8.0.32, 8.0.3226.50405), X64 RyuJIT x86-64-v4
+  .NET Framework 4.8 : .NET Framework 4.8 (4.8.10008.0), X64 RyuJIT VectorSize=256
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method                          </th><th>Job         </th><th>Runtime     </th><th>Length</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th><th>Ratio</th><th>RatioSD</th><th>Gen0</th><th>Allocated</th><th>Alloc Ratio</th>
+</tr>
+</thead><tbody><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET 10.0</td><td>.NET 10.0</td><td>16</td><td>1.361 ns</td><td>0.0198 ns</td><td>0.0176 ns</td><td>1.363 ns</td><td>0.16</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET 6.0</td><td>.NET 6.0</td><td>16</td><td>6.047 ns</td><td>0.0933 ns</td><td>0.0872 ns</td><td>6.069 ns</td><td>0.70</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET 8.0</td><td>.NET 8.0</td><td>16</td><td>2.589 ns</td><td>0.0078 ns</td><td>0.0069 ns</td><td>2.589 ns</td><td>0.30</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>16</td><td>8.613 ns</td><td>0.0354 ns</td><td>0.0314 ns</td><td>8.611 ns</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET 10.0</td><td>.NET 10.0</td><td>16</td><td>1.491 ns</td><td>0.0482 ns</td><td>0.0644 ns</td><td>1.457 ns</td><td>0.22</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET 6.0</td><td>.NET 6.0</td><td>16</td><td>6.119 ns</td><td>0.0235 ns</td><td>0.0220 ns</td><td>6.121 ns</td><td>0.89</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET 8.0</td><td>.NET 8.0</td><td>16</td><td>2.827 ns</td><td>0.0178 ns</td><td>0.0166 ns</td><td>2.827 ns</td><td>0.41</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>16</td><td>6.909 ns</td><td>0.0705 ns</td><td>0.0659 ns</td><td>6.897 ns</td><td>1.00</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET 10.0</td><td>.NET 10.0</td><td>16</td><td>9.286 ns</td><td>0.1165 ns</td><td>0.0910 ns</td><td>9.266 ns</td><td>0.28</td><td>0.00</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET 6.0</td><td>.NET 6.0</td><td>16</td><td>14.205 ns</td><td>0.1571 ns</td><td>0.1312 ns</td><td>14.159 ns</td><td>0.44</td><td>0.01</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET 8.0</td><td>.NET 8.0</td><td>16</td><td>12.320 ns</td><td>0.1881 ns</td><td>0.1571 ns</td><td>12.242 ns</td><td>0.38</td><td>0.01</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>16</td><td>32.659 ns</td><td>0.5570 ns</td><td>0.4938 ns</td><td>32.483 ns</td><td>1.00</td><td>0.02</td><td>0.0102</td><td>64 B</td><td>1.00</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET 10.0</td><td>.NET 10.0</td><td>16</td><td>9.269 ns</td><td>0.2195 ns</td><td>0.2527 ns</td><td>9.231 ns</td><td>0.43</td><td>0.01</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET 6.0</td><td>.NET 6.0</td><td>16</td><td>8.990 ns</td><td>0.1922 ns</td><td>0.3704 ns</td><td>8.913 ns</td><td>0.42</td><td>0.02</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET 8.0</td><td>.NET 8.0</td><td>16</td><td>10.470 ns</td><td>0.1871 ns</td><td>0.1750 ns</td><td>10.367 ns</td><td>0.49</td><td>0.01</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>16</td><td>21.321 ns</td><td>0.0973 ns</td><td>0.0910 ns</td><td>21.303 ns</td><td>1.00</td><td>0.01</td><td>0.0102</td><td>64 B</td><td>1.00</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET 10.0</td><td>.NET 10.0</td><td>16</td><td>8.918 ns</td><td>0.1046 ns</td><td>0.0874 ns</td><td>8.959 ns</td><td>0.47</td><td>0.01</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET 6.0</td><td>.NET 6.0</td><td>16</td><td>10.540 ns</td><td>0.2234 ns</td><td>0.2089 ns</td><td>10.460 ns</td><td>0.56</td><td>0.01</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET 8.0</td><td>.NET 8.0</td><td>16</td><td>11.066 ns</td><td>0.0839 ns</td><td>0.0655 ns</td><td>11.051 ns</td><td>0.58</td><td>0.00</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>16</td><td>18.920 ns</td><td>0.1114 ns</td><td>0.1042 ns</td><td>18.891 ns</td><td>1.00</td><td>0.01</td><td>0.0102</td><td>64 B</td><td>1.00</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET 10.0</td><td>.NET 10.0</td><td>16</td><td>5.407 ns</td><td>0.1293 ns</td><td>0.1210 ns</td><td>5.382 ns</td><td>0.27</td><td>0.01</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET 6.0</td><td>.NET 6.0</td><td>16</td><td>9.199 ns</td><td>0.0919 ns</td><td>0.0815 ns</td><td>9.178 ns</td><td>0.46</td><td>0.00</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET 8.0</td><td>.NET 8.0</td><td>16</td><td>7.716 ns</td><td>0.1159 ns</td><td>0.1084 ns</td><td>7.704 ns</td><td>0.39</td><td>0.01</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>16</td><td>20.024 ns</td><td>0.1319 ns</td><td>0.1234 ns</td><td>20.099 ns</td><td>1.00</td><td>0.01</td><td>0.0102</td><td>64 B</td><td>1.00</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET 10.0</td><td>.NET 10.0</td><td>16</td><td>5.244 ns</td><td>0.1393 ns</td><td>0.1303 ns</td><td>5.228 ns</td><td>0.69</td><td>0.02</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET 6.0</td><td>.NET 6.0</td><td>16</td><td>5.757 ns</td><td>0.0218 ns</td><td>0.0182 ns</td><td>5.753 ns</td><td>0.76</td><td>0.00</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET 8.0</td><td>.NET 8.0</td><td>16</td><td>5.910 ns</td><td>0.1234 ns</td><td>0.1154 ns</td><td>5.855 ns</td><td>0.78</td><td>0.02</td><td>0.0033</td><td>56 B</td><td>0.88</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>16</td><td>7.577 ns</td><td>0.0356 ns</td><td>0.0297 ns</td><td>7.590 ns</td><td>1.00</td><td>0.01</td><td>0.0102</td><td>64 B</td><td>1.00</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>1.664 ns</td><td>0.0322 ns</td><td>0.0301 ns</td><td>1.664 ns</td><td>0.21</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>6.548 ns</td><td>0.0803 ns</td><td>0.0751 ns</td><td>6.565 ns</td><td>0.81</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>2.868 ns</td><td>0.0235 ns</td><td>0.0220 ns</td><td>2.868 ns</td><td>0.35</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>8.093 ns</td><td>0.0174 ns</td><td>0.0163 ns</td><td>8.092 ns</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>2.356 ns</td><td>0.0200 ns</td><td>0.0178 ns</td><td>2.348 ns</td><td>0.26</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>7.248 ns</td><td>0.0163 ns</td><td>0.0136 ns</td><td>7.242 ns</td><td>0.81</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>4.176 ns</td><td>0.0152 ns</td><td>0.0142 ns</td><td>4.174 ns</td><td>0.47</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>8.936 ns</td><td>0.0860 ns</td><td>0.0805 ns</td><td>8.921 ns</td><td>1.00</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>15.391 ns</td><td>0.3397 ns</td><td>0.4043 ns</td><td>15.153 ns</td><td>0.27</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>22.772 ns</td><td>0.4725 ns</td><td>0.4853 ns</td><td>22.703 ns</td><td>0.40</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>18.503 ns</td><td>0.0928 ns</td><td>0.0868 ns</td><td>18.505 ns</td><td>0.33</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>56.372 ns</td><td>0.3968 ns</td><td>0.3712 ns</td><td>56.365 ns</td><td>1.00</td><td>0.01</td><td>0.0459</td><td>289 B</td><td>1.00</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>15.212 ns</td><td>0.0758 ns</td><td>0.0633 ns</td><td>15.239 ns</td><td>0.33</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>16.496 ns</td><td>0.1417 ns</td><td>0.1183 ns</td><td>16.462 ns</td><td>0.36</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>14.162 ns</td><td>0.0691 ns</td><td>0.0613 ns</td><td>14.166 ns</td><td>0.31</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>45.648 ns</td><td>0.1352 ns</td><td>0.1264 ns</td><td>45.690 ns</td><td>1.00</td><td>0.00</td><td>0.0459</td><td>289 B</td><td>1.00</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>14.157 ns</td><td>0.0651 ns</td><td>0.0608 ns</td><td>14.153 ns</td><td>0.22</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>18.251 ns</td><td>0.0848 ns</td><td>0.0794 ns</td><td>18.232 ns</td><td>0.28</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>15.265 ns</td><td>0.0654 ns</td><td>0.0612 ns</td><td>15.252 ns</td><td>0.24</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>64.381 ns</td><td>0.4846 ns</td><td>0.4296 ns</td><td>64.338 ns</td><td>1.00</td><td>0.01</td><td>0.0459</td><td>289 B</td><td>1.00</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>10.677 ns</td><td>0.0722 ns</td><td>0.0640 ns</td><td>10.680 ns</td><td>0.40</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>15.260 ns</td><td>0.1274 ns</td><td>0.1191 ns</td><td>15.255 ns</td><td>0.58</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>12.605 ns</td><td>0.1341 ns</td><td>0.1254 ns</td><td>12.663 ns</td><td>0.48</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>26.392 ns</td><td>0.0596 ns</td><td>0.0558 ns</td><td>26.380 ns</td><td>1.00</td><td>0.00</td><td>0.0459</td><td>289 B</td><td>1.00</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>10.699 ns</td><td>0.1335 ns</td><td>0.1249 ns</td><td>10.716 ns</td><td>0.51</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>10.958 ns</td><td>0.0584 ns</td><td>0.0518 ns</td><td>10.955 ns</td><td>0.52</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>10.797 ns</td><td>0.1805 ns</td><td>0.1689 ns</td><td>10.777 ns</td><td>0.52</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>20.947 ns</td><td>0.0497 ns</td><td>0.0440 ns</td><td>20.955 ns</td><td>1.00</td><td>0.00</td><td>0.0459</td><td>289 B</td><td>1.00</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>7.574 ns</td><td>0.0796 ns</td><td>0.0744 ns</td><td>7.531 ns</td><td>0.22</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>15.930 ns</td><td>0.2207 ns</td><td>0.2064 ns</td><td>15.870 ns</td><td>0.47</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>9.844 ns</td><td>0.0883 ns</td><td>0.0982 ns</td><td>9.834 ns</td><td>0.29</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_AsReadOnlyView</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>34.069 ns</td><td>0.4786 ns</td><td>0.4477 ns</td><td>33.951 ns</td><td>1.00</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>18.644 ns</td><td>0.2164 ns</td><td>0.1919 ns</td><td>18.604 ns</td><td>0.46</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>30.582 ns</td><td>0.0858 ns</td><td>0.0802 ns</td><td>30.554 ns</td><td>0.75</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>19.901 ns</td><td>0.0488 ns</td><td>0.0407 ns</td><td>19.910 ns</td><td>0.49</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf16CString_AsReadOnlyView</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>40.928 ns</td><td>0.5871 ns</td><td>0.5204 ns</td><td>40.708 ns</td><td>1.00</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>90.877 ns</td><td>1.4585 ns</td><td>1.3643 ns</td><td>90.793 ns</td><td>0.17</td><td>0.00</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>153.621 ns</td><td>2.5183 ns</td><td>2.3557 ns</td><td>153.332 ns</td><td>0.29</td><td>0.00</td><td>0.2460</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>93.750 ns</td><td>1.1652 ns</td><td>1.0899 ns</td><td>94.188 ns</td><td>0.18</td><td>0.00</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Utf8CString_ToString_UnknownLength</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>530.979 ns</td><td>1.8246 ns</td><td>1.4245 ns</td><td>531.084 ns</td><td>1.00</td><td>0.00</td><td>0.6571</td><td>4142 B</td><td>1.00</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>86.435 ns</td><td>1.6881 ns</td><td>2.0095 ns</td><td>86.904 ns</td><td>0.17</td><td>0.00</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>147.773 ns</td><td>2.9262 ns</td><td>2.5940 ns</td><td>147.145 ns</td><td>0.29</td><td>0.01</td><td>0.2460</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>82.763 ns</td><td>1.2059 ns</td><td>1.1280 ns</td><td>83.030 ns</td><td>0.16</td><td>0.00</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>NativeUtf8CString_ToString_KnownLength</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>510.379 ns</td><td>8.6632 ns</td><td>7.2342 ns</td><td>507.544 ns</td><td>1.00</td><td>0.02</td><td>0.6571</td><td>4142 B</td><td>1.00</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>89.332 ns</td><td>1.7183 ns</td><td>1.8385 ns</td><td>89.796 ns</td><td>0.10</td><td>0.00</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>144.113 ns</td><td>1.1528 ns</td><td>0.9001 ns</td><td>144.305 ns</td><td>0.16</td><td>0.00</td><td>0.2460</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>90.301 ns</td><td>1.3209 ns</td><td>1.2356 ns</td><td>90.572 ns</td><td>0.10</td><td>0.00</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUTF8</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>885.569 ns</td><td>4.3349 ns</td><td>3.6198 ns</td><td>885.038 ns</td><td>1.00</td><td>0.01</td><td>0.6561</td><td>4142 B</td><td>1.00</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>95.865 ns</td><td>1.9544 ns</td><td>3.9924 ns</td><td>94.714 ns</td><td>0.74</td><td>0.03</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>116.159 ns</td><td>2.1979 ns</td><td>3.9067 ns</td><td>115.538 ns</td><td>0.90</td><td>0.03</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>95.940 ns</td><td>1.9295 ns</td><td>4.1945 ns</td><td>94.004 ns</td><td>0.74</td><td>0.03</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Utf16CString_ToString</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>129.623 ns</td><td>1.3174 ns</td><td>1.1001 ns</td><td>129.360 ns</td><td>1.00</td><td>0.01</td><td>0.6578</td><td>4142 B</td><td>1.00</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>94.280 ns</td><td>1.7795 ns</td><td>1.7477 ns</td><td>94.641 ns</td><td>0.34</td><td>0.01</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>108.709 ns</td><td>1.9400 ns</td><td>1.7198 ns</td><td>108.700 ns</td><td>0.39</td><td>0.01</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>98.383 ns</td><td>1.8963 ns</td><td>2.0290 ns</td><td>98.527 ns</td><td>0.35</td><td>0.01</td><td>0.2462</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_Marshal_PtrToStringUni</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>280.267 ns</td><td>2.4710 ns</td><td>1.9292 ns</td><td>279.434 ns</td><td>1.00</td><td>0.01</td><td>0.6576</td><td>4142 B</td><td>1.00</td>
+</tr></tbody></table>
+</body>
+</html>

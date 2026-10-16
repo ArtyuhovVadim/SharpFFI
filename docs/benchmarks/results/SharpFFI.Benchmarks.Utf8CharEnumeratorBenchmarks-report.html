@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>SharpFFI.Benchmarks.Utf8CharEnumeratorBenchmarks-20261016-224406</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26300.9711)
+AMD Ryzen 7 9700X 3.80GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.102
+  [Host]             : .NET 8.0.32 (8.0.32, 8.0.3226.50405), X64 RyuJIT x86-64-v4
+  .NET 10.0          : .NET 10.0.13 (10.0.13, 10.0.1326.50504), X64 RyuJIT x86-64-v4
+  .NET 6.0           : .NET 6.0.36 (6.0.36, 6.0.3624.51421), X64 RyuJIT x86-64-v3
+  .NET 8.0           : .NET 8.0.32 (8.0.32, 8.0.3226.50405), X64 RyuJIT x86-64-v4
+  .NET Framework 4.8 : .NET Framework 4.8 (4.8.10008.0), X64 RyuJIT VectorSize=256
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method                         </th><th>Job         </th><th>Runtime     </th><th>Length</th><th>Charset</th><th>Mean </th><th>Error</th><th>StdDev</th><th>Median</th><th>Ratio</th><th>RatioSD</th><th>Gen0</th><th>Allocated</th><th>Alloc Ratio</th>
+</tr>
+</thead><tbody><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>Ascii</td><td>51.71 ns</td><td>1.014 ns</td><td>1.041 ns</td><td>51.26 ns</td><td>0.39</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>Ascii</td><td>126.51 ns</td><td>1.429 ns</td><td>1.193 ns</td><td>125.86 ns</td><td>0.97</td><td>0.03</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>Ascii</td><td>49.08 ns</td><td>1.005 ns</td><td>1.196 ns</td><td>48.26 ns</td><td>0.37</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>Ascii</td><td>131.12 ns</td><td>2.565 ns</td><td>3.336 ns</td><td>129.32 ns</td><td>1.00</td><td>0.03</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>Ascii</td><td>38.41 ns</td><td>0.385 ns</td><td>0.321 ns</td><td>38.38 ns</td><td>0.52</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>Ascii</td><td>45.34 ns</td><td>0.340 ns</td><td>0.284 ns</td><td>45.28 ns</td><td>0.61</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>Ascii</td><td>35.19 ns</td><td>0.690 ns</td><td>0.611 ns</td><td>35.00 ns</td><td>0.48</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>Ascii</td><td>73.89 ns</td><td>1.052 ns</td><td>0.984 ns</td><td>73.42 ns</td><td>1.00</td><td>0.02</td><td>0.0459</td><td>289 B</td><td>1.00</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>Ascii</td><td>32.69 ns</td><td>0.624 ns</td><td>0.584 ns</td><td>32.47 ns</td><td>0.43</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>Ascii</td><td>46.82 ns</td><td>0.393 ns</td><td>0.307 ns</td><td>46.69 ns</td><td>0.62</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>Ascii</td><td>40.18 ns</td><td>0.317 ns</td><td>0.281 ns</td><td>40.04 ns</td><td>0.53</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>Ascii</td><td>76.14 ns</td><td>1.431 ns</td><td>1.339 ns</td><td>75.66 ns</td><td>1.00</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>Cyrillic</td><td>96.63 ns</td><td>0.415 ns</td><td>0.324 ns</td><td>96.57 ns</td><td>0.46</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>Cyrillic</td><td>177.93 ns</td><td>3.377 ns</td><td>3.316 ns</td><td>176.24 ns</td><td>0.84</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>Cyrillic</td><td>130.88 ns</td><td>2.574 ns</td><td>2.643 ns</td><td>130.12 ns</td><td>0.62</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>Cyrillic</td><td>210.69 ns</td><td>2.423 ns</td><td>2.266 ns</td><td>210.12 ns</td><td>1.00</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>Cyrillic</td><td>109.17 ns</td><td>1.204 ns</td><td>1.068 ns</td><td>108.58 ns</td><td>0.37</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>Cyrillic</td><td>117.33 ns</td><td>1.576 ns</td><td>1.231 ns</td><td>117.35 ns</td><td>0.39</td><td>0.00</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>Cyrillic</td><td>105.88 ns</td><td>1.763 ns</td><td>1.649 ns</td><td>105.09 ns</td><td>0.36</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>Cyrillic</td><td>297.97 ns</td><td>2.208 ns</td><td>1.843 ns</td><td>298.77 ns</td><td>1.00</td><td>0.01</td><td>0.0458</td><td>289 B</td><td>1.00</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>Cyrillic</td><td>74.46 ns</td><td>1.262 ns</td><td>1.180 ns</td><td>73.74 ns</td><td>0.46</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>Cyrillic</td><td>83.47 ns</td><td>1.668 ns</td><td>1.393 ns</td><td>82.64 ns</td><td>0.52</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>Cyrillic</td><td>81.46 ns</td><td>0.131 ns</td><td>0.102 ns</td><td>81.47 ns</td><td>0.50</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>Cyrillic</td><td>161.48 ns</td><td>3.090 ns</td><td>2.890 ns</td><td>160.73 ns</td><td>1.00</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>EmojiHeavy</td><td>134.88 ns</td><td>2.242 ns</td><td>2.097 ns</td><td>134.07 ns</td><td>0.59</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>EmojiHeavy</td><td>177.60 ns</td><td>1.836 ns</td><td>1.533 ns</td><td>177.67 ns</td><td>0.78</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>EmojiHeavy</td><td>139.47 ns</td><td>2.792 ns</td><td>3.324 ns</td><td>139.02 ns</td><td>0.61</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>EmojiHeavy</td><td>226.98 ns</td><td>3.910 ns</td><td>3.658 ns</td><td>225.63 ns</td><td>1.00</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>EmojiHeavy</td><td>224.05 ns</td><td>0.354 ns</td><td>0.277 ns</td><td>224.03 ns</td><td>0.89</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>EmojiHeavy</td><td>259.26 ns</td><td>1.496 ns</td><td>1.249 ns</td><td>259.81 ns</td><td>1.03</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>EmojiHeavy</td><td>230.34 ns</td><td>1.916 ns</td><td>1.600 ns</td><td>230.13 ns</td><td>0.92</td><td>0.01</td><td>0.0167</td><td>280 B</td><td>0.97</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>EmojiHeavy</td><td>251.11 ns</td><td>2.183 ns</td><td>1.823 ns</td><td>250.90 ns</td><td>1.00</td><td>0.01</td><td>0.0458</td><td>289 B</td><td>1.00</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 10.0</td><td>.NET 10.0</td><td>128</td><td>EmojiHeavy</td><td>122.11 ns</td><td>0.665 ns</td><td>0.519 ns</td><td>122.18 ns</td><td>0.71</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 6.0</td><td>.NET 6.0</td><td>128</td><td>EmojiHeavy</td><td>139.56 ns</td><td>0.318 ns</td><td>0.265 ns</td><td>139.50 ns</td><td>0.81</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 8.0</td><td>.NET 8.0</td><td>128</td><td>EmojiHeavy</td><td>125.71 ns</td><td>2.536 ns</td><td>2.605 ns</td><td>124.36 ns</td><td>0.73</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>128</td><td>EmojiHeavy</td><td>173.15 ns</td><td>1.664 ns</td><td>1.390 ns</td><td>173.08 ns</td><td>1.00</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>Ascii</td><td>785.02 ns</td><td>14.883 ns</td><td>15.284 ns</td><td>781.73 ns</td><td>0.43</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>Ascii</td><td>1,904.64 ns</td><td>6.258 ns</td><td>4.886 ns</td><td>1,905.68 ns</td><td>1.05</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>Ascii</td><td>769.77 ns</td><td>7.103 ns</td><td>5.931 ns</td><td>768.20 ns</td><td>0.42</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>Ascii</td><td>1,815.99 ns</td><td>21.795 ns</td><td>20.387 ns</td><td>1,810.13 ns</td><td>1.00</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>Ascii</td><td>474.48 ns</td><td>5.215 ns</td><td>4.623 ns</td><td>473.00 ns</td><td>0.53</td><td>0.01</td><td>0.2460</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>Ascii</td><td>534.86 ns</td><td>4.616 ns</td><td>3.604 ns</td><td>533.02 ns</td><td>0.59</td><td>0.00</td><td>0.2460</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>Ascii</td><td>480.99 ns</td><td>5.372 ns</td><td>4.194 ns</td><td>481.09 ns</td><td>0.53</td><td>0.00</td><td>0.2460</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>Ascii</td><td>900.44 ns</td><td>4.591 ns</td><td>3.584 ns</td><td>901.18 ns</td><td>1.00</td><td>0.01</td><td>0.6571</td><td>4142 B</td><td>1.00</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>Ascii</td><td>400.77 ns</td><td>1.686 ns</td><td>1.316 ns</td><td>400.20 ns</td><td>0.53</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>Ascii</td><td>469.30 ns</td><td>0.701 ns</td><td>0.586 ns</td><td>468.94 ns</td><td>0.62</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>Ascii</td><td>410.02 ns</td><td>2.557 ns</td><td>2.135 ns</td><td>409.14 ns</td><td>0.54</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>Ascii</td><td>756.54 ns</td><td>1.391 ns</td><td>1.162 ns</td><td>756.34 ns</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>Cyrillic</td><td>1,586.57 ns</td><td>25.544 ns</td><td>23.894 ns</td><td>1,577.16 ns</td><td>0.52</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>Cyrillic</td><td>2,628.24 ns</td><td>13.377 ns</td><td>10.444 ns</td><td>2,627.32 ns</td><td>0.87</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>Cyrillic</td><td>1,899.28 ns</td><td>10.646 ns</td><td>8.890 ns</td><td>1,897.49 ns</td><td>0.63</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>Cyrillic</td><td>3,037.82 ns</td><td>59.771 ns</td><td>79.793 ns</td><td>2,993.30 ns</td><td>1.00</td><td>0.04</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>Cyrillic</td><td>1,578.72 ns</td><td>28.438 ns</td><td>26.601 ns</td><td>1,570.91 ns</td><td>0.40</td><td>0.01</td><td>0.2460</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>Cyrillic</td><td>1,711.42 ns</td><td>25.724 ns</td><td>24.062 ns</td><td>1,699.99 ns</td><td>0.43</td><td>0.01</td><td>0.2460</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>Cyrillic</td><td>1,636.28 ns</td><td>13.489 ns</td><td>11.264 ns</td><td>1,632.16 ns</td><td>0.41</td><td>0.01</td><td>0.2460</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>Cyrillic</td><td>3,989.17 ns</td><td>69.483 ns</td><td>61.595 ns</td><td>3,954.87 ns</td><td>1.00</td><td>0.02</td><td>0.6561</td><td>4142 B</td><td>1.00</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>Cyrillic</td><td>1,105.60 ns</td><td>10.115 ns</td><td>7.897 ns</td><td>1,109.15 ns</td><td>0.55</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>Cyrillic</td><td>1,114.77 ns</td><td>4.490 ns</td><td>3.749 ns</td><td>1,112.97 ns</td><td>0.55</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>Cyrillic</td><td>1,097.87 ns</td><td>8.199 ns</td><td>6.847 ns</td><td>1,095.27 ns</td><td>0.55</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>Cyrillic</td><td>2,013.83 ns</td><td>12.766 ns</td><td>11.317 ns</td><td>2,016.23 ns</td><td>1.00</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>EmojiHeavy</td><td>2,167.04 ns</td><td>26.202 ns</td><td>23.227 ns</td><td>2,163.12 ns</td><td>0.65</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>EmojiHeavy</td><td>2,614.42 ns</td><td>50.347 ns</td><td>59.934 ns</td><td>2,580.98 ns</td><td>0.79</td><td>0.02</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>EmojiHeavy</td><td>2,283.12 ns</td><td>17.825 ns</td><td>14.885 ns</td><td>2,281.62 ns</td><td>0.69</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Foreach_Utf8StringView_CharEnumerator</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>EmojiHeavy</td><td>3,317.11 ns</td><td>25.639 ns</td><td>20.017 ns</td><td>3,316.53 ns</td><td>1.00</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>EmojiHeavy</td><td>3,519.09 ns</td><td>18.744 ns</td><td>15.652 ns</td><td>3,522.98 ns</td><td>0.98</td><td>0.03</td><td>0.2441</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>EmojiHeavy</td><td>3,784.45 ns</td><td>60.421 ns</td><td>56.518 ns</td><td>3,776.01 ns</td><td>1.05</td><td>0.04</td><td>0.2441</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>EmojiHeavy</td><td>3,556.45 ns</td><td>34.799 ns</td><td>27.169 ns</td><td>3,537.25 ns</td><td>0.99</td><td>0.03</td><td>0.2441</td><td>4120 B</td><td>0.99</td>
+</tr><tr><td>Baseline_ToString_ThenForeachChar</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>EmojiHeavy</td><td>3,610.36 ns</td><td>71.110 ns</td><td>131.807 ns</td><td>3,542.11 ns</td><td>1.00</td><td>0.05</td><td>0.6561</td><td>4142 B</td><td>1.00</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 10.0</td><td>.NET 10.0</td><td>2048</td><td>EmojiHeavy</td><td>1,710.13 ns</td><td>12.541 ns</td><td>9.791 ns</td><td>1,707.87 ns</td><td>0.69</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 6.0</td><td>.NET 6.0</td><td>2048</td><td>EmojiHeavy</td><td>1,932.78 ns</td><td>31.485 ns</td><td>26.292 ns</td><td>1,921.49 ns</td><td>0.78</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET 8.0</td><td>.NET 8.0</td><td>2048</td><td>EmojiHeavy</td><td>1,690.57 ns</td><td>1.201 ns</td><td>1.064 ns</td><td>1,690.75 ns</td><td>0.68</td><td>0.00</td><td>-</td><td>-</td><td>NA</td>
+</tr><tr><td>Baseline_ArrayPool_EncodingGetChars</td><td>.NET Framework 4.8</td><td>.NET Framework 4.8</td><td>2048</td><td>EmojiHeavy</td><td>2,488.42 ns</td><td>19.160 ns</td><td>16.985 ns</td><td>2,490.73 ns</td><td>1.00</td><td>0.01</td><td>-</td><td>-</td><td>NA</td>
+</tr></tbody></table>
+</body>
+</html>
