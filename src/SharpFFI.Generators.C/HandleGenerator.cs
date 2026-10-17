@@ -1,16 +1,12 @@
-﻿using System.Text;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using SharpFFI.Annotations;
 using SharpFFI.Generators.Core;
 
 namespace SharpFFI.Generators.C;
-
-public readonly record struct HandleGenerationContext(string StructNamespace, string StructName, bool IsRef)
-{
-    public bool IsGlobalNamespace => string.IsNullOrEmpty(StructNamespace);
-}
 
 [Generator(LanguageNames.CSharp)]
 public class HandleGenerator : IIncrementalGenerator
@@ -23,12 +19,13 @@ public class HandleGenerator : IIncrementalGenerator
             transform: static (context, _) =>
             {
                 var symbol = (INamedTypeSymbol)context.TargetSymbol;
+                var attribute = context.Attributes[0].ToHandleAttribute();
 
                 var name = symbol.Name;
                 var @namespace = symbol.ContainingNamespace.IsGlobalNamespace ? string.Empty : symbol.ContainingNamespace.ToDisplayString();
                 var isRef = symbol.IsRefLikeType;
 
-                return new HandleGenerationContext(@namespace, name, isRef);
+                return new HandleGenerationContext(@namespace, name, isRef, attribute);
             });
 
         context.RegisterSourceOutput(handleDeclarations, static (productionContext, handleContext) =>
@@ -83,8 +80,24 @@ public class HandleGenerator : IIncrementalGenerator
         using (builder.BeginScope())
         {
             builder.AppendLine("public readonly nint Handle;")
-                   .AppendLine()
-                   .AppendAgressiveInlining()
+                   .AppendLine();
+
+            if (context.HandleAttribute.Ctor != DefaultHandleCtor.None)
+            {
+                var ctorCode = context.HandleAttribute.Ctor switch
+                {
+                    DefaultHandleCtor.Private => $"private {context.StructName}(nint handle) => Handle = handle;",
+                    DefaultHandleCtor.Internal => $"internal {context.StructName}(nint handle) => Handle = handle;",
+                    DefaultHandleCtor.Public => $"public {context.StructName}(nint handle) => Handle = handle;",
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                builder.AppendAgressiveInlining()
+                       .AppendLine(ctorCode)
+                       .AppendLine();
+            }
+
+            builder.AppendAgressiveInlining()
                    .AppendLine($"public bool Equals({context.StructName} other) => Handle.Equals(other.Handle);")
                    .AppendLine();
 
@@ -121,5 +134,10 @@ public class HandleGenerator : IIncrementalGenerator
                    .AppendAgressiveInlining()
                    .AppendLine($"public static bool operator !=({context.StructName} left, {context.StructName} right) => !left.Equals(right);");
         }
+    }
+
+    private readonly record struct HandleGenerationContext(string StructNamespace, string StructName, bool IsRef, HandleAttributeData HandleAttribute)
+    {
+        public bool IsGlobalNamespace => string.IsNullOrEmpty(StructNamespace);
     }
 }

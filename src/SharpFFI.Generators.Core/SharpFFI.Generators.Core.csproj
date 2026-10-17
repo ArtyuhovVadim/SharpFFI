@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <OutputItemType>Analyzer</OutputItemType>
@@ -19,6 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SharpFFI.Primitives\SharpFFI.Primitives.csproj" />
+        <Compile Include="..\SharpFFI.Annotations\DefaultHandleCtor.cs" Link="DefaultHandleCtor.cs" />
     </ItemGroup>
 </Project>

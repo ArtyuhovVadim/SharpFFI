@@ -8,6 +8,8 @@
         <PackageReference Include="IndexRange" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\SharpFFI.Annotations\SharpFFI.Annotations.csproj" />
+
         <ProjectReference Include="..\SharpFFI.Primitives\SharpFFI.Primitives.csproj"
                           Condition="'$(TargetFramework)' == 'net48'"
                           SetTargetFramework="TargetFramework=netstandard2.0" />

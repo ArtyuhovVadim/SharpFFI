@@ -40,6 +40,7 @@
     <Project Path="src/SharpFFI.Generators.Core/SharpFFI.Generators.Core.csproj" />
     <Project Path="src/SharpFFI.Generators.C/SharpFFI.Generators.C.csproj" />
     <Project Path="src/SharpFFI.Generators.Cpp/SharpFFI.Generators.Cpp.csproj" />
+    <Project Path="src/SharpFFI.Annotations/SharpFFI.Annotations.csproj" />
     <Project Path="src/SharpFFI.Benchmarks/SharpFFI.Benchmarks.csproj" />
   </Folder>
 </Solution>
