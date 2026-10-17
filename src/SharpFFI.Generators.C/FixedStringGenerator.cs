@@ -27,22 +27,6 @@ public readonly record struct FixedStringGenerationContext(string StructNamespac
 [Generator(LanguageNames.CSharp)]
 public class FixedStringGenerator : IIncrementalGenerator
 {
-    private static readonly DiagnosticDescriptor InvalidNameError = new(
-        id: "FFI0001",
-        title: "Invalid FixedString struct name",
-        messageFormat: "The name of struct '{0}' decorated with [FixedString] must match the pattern 'Utf8FixedCString<size>' or 'ReadOnlyUtf8FixedCString<size>' (e.g., Utf8FixedCString16, ReadOnlyUtf8FixedCString67)",
-        category: "Design",
-        defaultSeverity: DiagnosticSeverity.Error,
-        isEnabledByDefault: true);
-
-    private static readonly DiagnosticDescriptor RefNotAllowedError = new(
-        id: "FFI0002",
-        title: "Ref modifier is not allowed",
-        messageFormat: "Struct '{0}' with [FixedString] cannot be a ref struct. Fixed strings must be embeddable in standard structs.",
-        category: "Design",
-        defaultSeverity: DiagnosticSeverity.Error,
-        isEnabledByDefault: true);
-
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var handleDeclarations = context.SyntaxProvider.ForAttributeWithMetadataName(
@@ -62,12 +46,12 @@ public class FixedStringGenerator : IIncrementalGenerator
 
                 if (!match.Success || !int.TryParse(match.Groups["size"].Value, out var size) || size <= 0)
                 {
-                    return new FixedStringGenerationContext(string.Empty, name, 0, false, location, InvalidNameError);
+                    return new FixedStringGenerationContext(string.Empty, name, 0, false, location, DiagnosticDescriptors.InvalidNameError);
                 }
 
                 if (symbol.IsRefLikeType)
                 {
-                    return new FixedStringGenerationContext(string.Empty, name, 0, false, location, RefNotAllowedError);
+                    return new FixedStringGenerationContext(string.Empty, name, 0, false, location, DiagnosticDescriptors.RefNotAllowedError);
                 }
 
                 return new FixedStringGenerationContext(@namespace, name, size, isReadOnly, null, null);

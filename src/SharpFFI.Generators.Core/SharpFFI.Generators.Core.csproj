@@ -21,4 +21,10 @@
     <ItemGroup>
         <Compile Include="..\SharpFFI.Annotations\DefaultHandleCtor.cs" Link="DefaultHandleCtor.cs" />
     </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+        <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+    </ItemGroup>
 </Project>
+
