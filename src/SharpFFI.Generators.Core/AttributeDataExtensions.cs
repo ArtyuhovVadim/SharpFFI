@@ -3,7 +3,19 @@ using SharpFFI.Annotations;
 
 namespace SharpFFI.Generators.Core;
 
-public record struct HandleAttributeData(DefaultHandleCtor Ctor);
+public record struct HandleAttributeData(DefaultHandleCtor Ctor)
+{
+    public const string AttributeFullName = "SharpFFI.Annotations.HandleAttribute";
+
+    public const string AttributeShortName = "Handle";
+}
+
+public record struct FixedStringAttributeData
+{
+    public const string AttributeFullName = "SharpFFI.Annotations.FixedStringAttribute";
+
+    public const string AttributeShortName = "FixedString";
+}
 
 public static class AttributeDataExtensions
 {

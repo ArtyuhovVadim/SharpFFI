@@ -8,13 +8,18 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Bcl.HashCode" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" >
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" >
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
             <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+
+        <PackageReference Include="Nullable">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
@@ -27,4 +32,4 @@
         <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
     </ItemGroup>
 </Project>
-
+

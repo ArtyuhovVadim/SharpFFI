@@ -1,10 +1,10 @@
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using SharpFFI.Annotations;
 using SharpFFI.Generators.Core;
+using System.Text;
 
 namespace SharpFFI.Generators.C;
 
@@ -14,22 +14,21 @@ public class HandleGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var handleDeclarations = context.SyntaxProvider.ForAttributeWithMetadataName(
-            fullyQualifiedMetadataName: "SharpFFI.Annotations.HandleAttribute",
-            predicate: static (syntaxNode, _) => syntaxNode is StructDeclarationSyntax decl && decl.Modifiers.Any(SyntaxKind.PartialKeyword),
+            fullyQualifiedMetadataName: HandleAttributeData.AttributeFullName,
+            predicate: static (syntaxNode, _) => syntaxNode is StructDeclarationSyntax structDeclaration && PartialValidator.IsValid(structDeclaration),
             transform: static (context, _) =>
             {
                 var symbol = (INamedTypeSymbol)context.TargetSymbol;
-                var attribute = context.Attributes[0].ToHandleAttribute();
+                var handleAttribute = context.Attributes[0].ToHandleAttribute();
 
                 var name = symbol.Name;
                 var @namespace = symbol.ContainingNamespace.IsGlobalNamespace ? string.Empty : symbol.ContainingNamespace.ToDisplayString();
                 var isRef = symbol.IsRefLikeType;
 
-                return new HandleGenerationContext(@namespace, name, isRef, attribute);
+                return new HandleGenerationContext(@namespace, name, isRef, handleAttribute);
             });
 
-        context.RegisterSourceOutput(handleDeclarations, static (productionContext, handleContext) =>
-            productionContext.AddSource($"{handleContext.StructName}.Handle.g.cs", SourceText.From(GenerateHandleSourceCode(handleContext), Encoding.UTF8)));
+        context.RegisterSourceOutput(handleDeclarations, static (productionContext, handleContext) => productionContext.AddSource($"{handleContext.StructName}.Handle.g.cs", SourceText.From(GenerateHandleSourceCode(handleContext), Encoding.UTF8)));
     }
 
     private static string GenerateHandleSourceCode(HandleGenerationContext context)

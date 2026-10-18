@@ -29,7 +29,7 @@ public class FixedStringGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var handleDeclarations = context.SyntaxProvider.ForAttributeWithMetadataName(
+        var fixedStringDeclarations = context.SyntaxProvider.ForAttributeWithMetadataName(
             fullyQualifiedMetadataName: "SharpFFI.Annotations.FixedStringAttribute",
             predicate: static (syntaxNode, _) => syntaxNode is StructDeclarationSyntax decl && decl.Modifiers.Any(SyntaxKind.PartialKeyword),
             transform: static (context, _) =>
@@ -57,7 +57,7 @@ public class FixedStringGenerator : IIncrementalGenerator
                 return new FixedStringGenerationContext(@namespace, name, size, isReadOnly, null, null);
             });
 
-        context.RegisterSourceOutput(handleDeclarations, static (productionContext, fixedStringContext) =>
+        context.RegisterSourceOutput(fixedStringDeclarations, static (productionContext, fixedStringContext) =>
         {
             if (fixedStringContext is { Diagnostic: not null, Location: not null })
                 productionContext.ReportDiagnostic(Diagnostic.Create(fixedStringContext.Diagnostic, fixedStringContext.Location, fixedStringContext.StructName));
@@ -136,7 +136,7 @@ public class FixedStringGenerator : IIncrementalGenerator
             using (builder.BeginScope())
             {
                 builder.AppendLine("if (string.IsNullOrEmpty(value))");
-                
+
                 using (builder.BeginScope())
                 {
                     builder.AppendLine("Pointer[0] = (byte)'\\0';")
@@ -145,7 +145,7 @@ public class FixedStringGenerator : IIncrementalGenerator
 
                 builder.AppendLine()
                        .AppendLine("fixed (char* valuePtr = value)");
-                
+
                 using (builder.BeginScope())
                 {
                     builder.AppendLine("int bytesWritten = Encoding.UTF8.GetBytes(valuePtr, value.Length, Pointer, Size - 1);")
@@ -175,7 +175,7 @@ public class FixedStringGenerator : IIncrementalGenerator
 
             builder.AppendLine()
                    .AppendLine("private int Length");
-            
+
             using (builder.BeginScope())
             {
                 builder.AppendAgressiveInlining()
@@ -190,7 +190,7 @@ public class FixedStringGenerator : IIncrementalGenerator
 
             builder.AppendLine()
                    .AppendLine("public bool IsEmpty");
-            
+
             using (builder.BeginScope())
             {
                 builder.AppendAgressiveInlining()
@@ -200,7 +200,7 @@ public class FixedStringGenerator : IIncrementalGenerator
             builder.AppendLine();
 
             builder.AppendLine(context.IsReadOnly ? "public byte this[int index]" : "public ref byte this[int index]");
-            
+
             using (builder.BeginScope())
             {
                 builder.AppendAgressiveInlining()
