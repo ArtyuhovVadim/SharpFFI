@@ -1,10 +1,9 @@
+using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using SharpFFI.Annotations;
 using SharpFFI.Generators.Core;
-using System.Text;
 
 namespace SharpFFI.Generators.C;
 

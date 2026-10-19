@@ -24,5 +24,6 @@
         <ProjectReference Include="..\SharpFFI.Generators.Core\SharpFFI.Generators.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\SharpFFI.Generators.C\SharpFFI.Generators.C.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\SharpFFI.Generators.Cpp\SharpFFI.Generators.Cpp.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\SharpFFI.Generators.CodeFixes\SharpFFI.Generators.CodeFixes.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 </Project>

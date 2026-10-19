@@ -1,8 +1,12 @@
 using System.Text;
+using SharpFFI.Annotations;
 using SharpFFI.Primitives;
 using SharpFFI.Primitives.Utf8;
 
 namespace SharpFFI.Demo;
+
+[Handle]
+public readonly partial struct GlHandle;
 
 public static unsafe class Program
 {
