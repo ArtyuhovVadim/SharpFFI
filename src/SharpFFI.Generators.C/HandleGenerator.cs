@@ -77,7 +77,9 @@ public class HandleGenerator : IIncrementalGenerator
 
         using (builder.BeginScope())
         {
-            builder.AppendLine("public readonly nint Handle;")
+            builder.AppendLine($"public static {context.StructName} Null => default;")
+                   .AppendLine()
+                   .AppendLine("public readonly nint Handle;")
                    .AppendLine();
 
             if (context.HandleAttribute.Ctor != DefaultHandleCtor.None)
