@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Text;
 using SharpFFI.Primitives.Extensions;
 
 namespace SharpFFI.Primitives.Utf8;
@@ -36,13 +37,13 @@ public sealed unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, ID
         if (indexOfNullTerminator >= 0)
             value = value.Slice(0, indexOfNullTerminator);
 
-        var exactBytesCount = FrameworkExtensions.GetUtf8BytesCount(value) + 1;
+        var exactBytesCount = (value.IsEmpty ? 0 : Encoding.UTF8.GetByteCount(value)) + 1;
         var pointer = FrameworkExtensions.NativeAlloc<byte>((nuint)exactBytesCount);
         var length = exactBytesCount - 1;
 
         var result = new NativeUtf8CString(pointer, length);
 
-        FrameworkExtensions.GetUtf8Bytes(value, result.Span);
+        Encoding.UTF8.GetBytes(value, result.Span);
         pointer[length] = 0;
 
         return result;
@@ -127,7 +128,7 @@ public sealed unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, ID
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => FrameworkExtensions.GetHashCode(Span);
+    public override int GetHashCode() => IsEmpty ? 0 : Marvin.ComputeHash32(AsReadOnlyView(), Marvin.DefaultSeed);
 
     /// <summary>
     /// Determines whether this instance and another <see cref="NativeUtf8CString"/> have the same byte content.
@@ -149,7 +150,7 @@ public sealed unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, ID
     /// </summary>
     /// <returns>A managed string representing the decoded content.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => FrameworkExtensions.ToString(Span);
+    public override string ToString() => IsEmpty ? string.Empty : Encoding.UTF8.GetString(Span);
 
     /// <summary>
     /// Determines whether two <see cref="NativeUtf8CString"/> instances have the same byte content.

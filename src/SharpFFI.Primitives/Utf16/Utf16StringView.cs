@@ -11,6 +11,11 @@ namespace SharpFFI.Primitives.Utf16;
 /// <summary>
 /// Represents a mutable, stack-only view over a UTF-16 character buffer.
 /// </summary>
+/// <remarks>
+/// This view does not own or manage the lifetime of the underlying memory.
+/// If initialized from a raw pointer pointing to memory on the managed GC heap, the target object must remain pinned for the entire lifetime of this view.
+/// If the target memory is relocated by the garbage collector or deallocated, accessing this view causes undefined behavior or memory corruption.
+/// </remarks>
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
 public readonly unsafe ref struct Utf16StringView
@@ -39,6 +44,9 @@ public readonly unsafe ref struct Utf16StringView
     /// <param name="pointer">The pointer to the start of the UTF-16 characters.</param>
     /// <param name="length">The number of characters in the view.</param>
     /// <returns>A new <see cref="Utf16StringView"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this view.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf16StringView FromPointerLength(char* pointer, int length) => new(pointer, length);
 
@@ -48,6 +56,9 @@ public readonly unsafe ref struct Utf16StringView
     /// <param name="pointer">The pointer to the start of the UTF-16 characters.</param>
     /// <param name="length">The number of characters in the view.</param>
     /// <returns>A new <see cref="Utf16StringView"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this view.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf16StringView FromPointerLength(nint pointer, int length) => new((char*)pointer, length);
 
@@ -56,6 +67,9 @@ public readonly unsafe ref struct Utf16StringView
     /// </summary>
     /// <param name="pointer">The pointer to the null-terminated UTF-16 string.</param>
     /// <returns>A new <see cref="Utf16StringView"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this view.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf16StringView FromPointer(char* pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated(pointer));
 
@@ -64,6 +78,9 @@ public readonly unsafe ref struct Utf16StringView
     /// </summary>
     /// <param name="pointer">The pointer to the null-terminated UTF-16 string.</param>
     /// <returns>A new <see cref="Utf16StringView"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this view.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf16StringView FromPointer(nint pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated((char*)pointer));
 
@@ -193,7 +210,7 @@ public readonly unsafe ref struct Utf16StringView
     /// </summary>
     /// <returns>A managed string representing the content.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => FrameworkExtensions.ToString(Span);
+    public override string ToString() => IsEmpty ? string.Empty : Span.ToString();
 
     /// <summary>
     /// Determines whether two <see cref="Utf16StringView"/> instances contain the same character sequence.

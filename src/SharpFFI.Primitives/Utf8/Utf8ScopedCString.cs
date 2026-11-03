@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 using SharpFFI.Primitives.Extensions;
 
 #pragma warning disable CS0809
@@ -51,21 +52,21 @@ public unsafe ref struct Utf8ScopedCString
         if (MaxUtf8BytesPerChar * value.Length < pinnedBuffer.Length)
         {
             var pointer = pinnedBuffer.AsPointer();
-            var length = FrameworkExtensions.GetUtf8Bytes(value, pinnedBuffer);
+            var length = Encoding.UTF8.GetBytes(value, pinnedBuffer);
             pointer[length] = 0;
 
             return new Utf8ScopedCString(pointer, length, heapAllocated: false);
         }
         else
         {
-            var exactBytesCount = FrameworkExtensions.GetUtf8BytesCount(value) + 1;
+            var exactBytesCount = (value.IsEmpty ? 0 : Encoding.UTF8.GetByteCount(value)) + 1;
             var heapAllocated = exactBytesCount > pinnedBuffer.Length;
             var pointer = heapAllocated ? FrameworkExtensions.NativeAlloc<byte>((nuint)exactBytesCount) : pinnedBuffer.AsPointer();
             var length = exactBytesCount - 1;
 
             var result = new Utf8ScopedCString(pointer, length, heapAllocated);
 
-            FrameworkExtensions.GetUtf8Bytes(value, result.Span);
+            Encoding.UTF8.GetBytes(value, result.Span);
             pointer[length] = 0;
 
             return result;
@@ -173,7 +174,7 @@ public unsafe ref struct Utf8ScopedCString
     /// </summary>
     /// <returns>A managed string representing the decoded content.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly override string ToString() => FrameworkExtensions.ToString(Span);
+    public readonly override string ToString() => IsEmpty ? string.Empty : Encoding.UTF8.GetString(Span);
 
     /// <summary>
     /// Determines whether two <see cref="Utf8ScopedCString"/> instances have the same byte content.

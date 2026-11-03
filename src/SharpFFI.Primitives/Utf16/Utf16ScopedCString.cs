@@ -131,7 +131,7 @@ public unsafe ref struct Utf16ScopedCString
     /// </summary>
     /// <returns>A managed string representing the content.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly override string ToString() => FrameworkExtensions.ToString(Span);
+    public readonly override string ToString() => IsEmpty ? string.Empty : Span.ToString();
 
     /// <summary>
     /// Determines whether two <see cref="Utf16ScopedCString"/> instances have the same character content.

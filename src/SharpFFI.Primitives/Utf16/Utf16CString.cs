@@ -8,6 +8,11 @@ namespace SharpFFI.Primitives.Utf16;
 /// <summary>
 /// Represents a non-owning pointer wrapper for a null-terminated UTF-16 wide string (<c>wchar_t*</c> / <c>char16_t*</c>).
 /// </summary>
+/// <remarks>
+/// This struct does not own or manage the lifetime of the underlying memory.
+/// When pointing to memory on the managed GC heap, the target object must remain pinned for the entire lifetime of this instance.
+/// If the target memory is relocated by the garbage collector or deallocated, accessing this instance causes undefined behavior or memory corruption.
+/// </remarks>
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
 public readonly unsafe struct Utf16CString : IEquatable<Utf16CString>
@@ -27,6 +32,9 @@ public readonly unsafe struct Utf16CString : IEquatable<Utf16CString>
     /// </summary>
     /// <param name="pointer">The pointer to the null-terminated UTF-16 string.</param>
     /// <returns>A new <see cref="Utf16CString"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this instance.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf16CString FromPointer(char* pointer) => new(pointer);
 
@@ -35,6 +43,9 @@ public readonly unsafe struct Utf16CString : IEquatable<Utf16CString>
     /// </summary>
     /// <param name="pointer">The pointer to the null-terminated UTF-16 string.</param>
     /// <returns>A new <see cref="Utf16CString"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this instance.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf16CString FromPointer(nint pointer) => new((char*)pointer);
 
@@ -100,14 +111,14 @@ public readonly unsafe struct Utf16CString : IEquatable<Utf16CString>
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => FrameworkExtensions.GetHashCode(AsReadOnlyView());
+    public override int GetHashCode() => IsEmpty ? 0 : Marvin.ComputeHash32(MemoryMarshal.AsBytes<char>(AsReadOnlyView()), Marvin.DefaultSeed);
 
     /// <summary>
     /// Converts the null-terminated UTF-16 string into a managed <see cref="string"/>.
     /// </summary>
     /// <returns>A managed string representing the content, or an empty string if <see cref="Pointer"/> is <see langword="null"/>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => FrameworkExtensions.ToString(AsReadOnlyView());
+    public override string ToString() => IsEmpty ? string.Empty : AsReadOnlyView().ToString();
 
     /// <summary>
     /// Determines whether two <see cref="Utf16CString"/> instances have the same character content.

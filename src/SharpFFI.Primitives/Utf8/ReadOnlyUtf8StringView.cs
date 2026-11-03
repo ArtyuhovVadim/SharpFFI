@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 using SharpFFI.Primitives.Extensions;
 
 #pragma warning disable CS0809
@@ -11,6 +12,11 @@ namespace SharpFFI.Primitives.Utf8;
 /// <summary>
 /// Represents a read-only, stack-only view over a UTF-8 byte buffer.
 /// </summary>
+/// <remarks>
+/// This view does not own or manage the lifetime of the underlying memory.
+/// If initialized from a raw pointer pointing to memory on the managed GC heap, the target object must remain pinned for the entire lifetime of this view.
+/// If the target memory is relocated by the garbage collector or deallocated, accessing this view causes undefined behavior or memory corruption.
+/// </remarks>
 [DebuggerDisplay("{ToString(),raw}")]
 [StructLayout(LayoutKind.Sequential)]
 public readonly unsafe ref struct ReadOnlyUtf8StringView
@@ -39,6 +45,9 @@ public readonly unsafe ref struct ReadOnlyUtf8StringView
     /// <param name="pointer">The pointer to the start of the UTF-8 bytes.</param>
     /// <param name="length">The number of bytes in the view.</param>
     /// <returns>A new <see cref="ReadOnlyUtf8StringView"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this view.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyUtf8StringView FromPointerLength(byte* pointer, int length) => new(pointer, length);
 
@@ -48,6 +57,9 @@ public readonly unsafe ref struct ReadOnlyUtf8StringView
     /// <param name="pointer">The pointer to the start of the UTF-8 bytes.</param>
     /// <param name="length">The number of bytes in the view.</param>
     /// <returns>A new <see cref="ReadOnlyUtf8StringView"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this view.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyUtf8StringView FromPointerLength(nint pointer, int length) => new((byte*)pointer, length);
 
@@ -56,6 +68,9 @@ public readonly unsafe ref struct ReadOnlyUtf8StringView
     /// </summary>
     /// <param name="pointer">The pointer to the null-terminated UTF-8 string.</param>
     /// <returns>A new <see cref="ReadOnlyUtf8StringView"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this view.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyUtf8StringView FromPointer(byte* pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated(pointer));
 
@@ -64,6 +79,9 @@ public readonly unsafe ref struct ReadOnlyUtf8StringView
     /// </summary>
     /// <param name="pointer">The pointer to the null-terminated UTF-8 string.</param>
     /// <returns>A new <see cref="ReadOnlyUtf8StringView"/> instance.</returns>
+    /// <remarks>
+    /// The caller is responsible for ensuring that the memory at <paramref name="pointer"/> remains valid, accessible, and pinned (if allocated on the managed GC heap) for the entire lifetime of this view.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyUtf8StringView FromPointer(nint pointer) => new(FrameworkExtensions.CreateSpanFromNullTerminated((byte*)pointer));
 
@@ -188,7 +206,7 @@ public readonly unsafe ref struct ReadOnlyUtf8StringView
     /// </summary>
     /// <returns>A managed string representing the decoded content.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => FrameworkExtensions.ToString(Span);
+    public override string ToString() => IsEmpty ? string.Empty : Encoding.UTF8.GetString(Span);
 
     /// <summary>
     /// Determines whether two <see cref="ReadOnlyUtf8StringView"/> instances contain the same byte sequence.
