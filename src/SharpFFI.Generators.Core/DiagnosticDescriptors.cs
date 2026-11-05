@@ -12,27 +12,27 @@ public static class DiagnosticDescriptors
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 
-    public static readonly DiagnosticDescriptor RefNotAllowedError = new(
+    public static readonly DiagnosticDescriptor ForbiddenModifierError = new(
         id: "FFI0002",
-        title: "Ref modifier is not allowed",
-        messageFormat: "Struct '{0}' with [FixedString] cannot be a ref struct. Fixed strings must be embeddable in standard structs.",
+        title: "Modifier is not allowed",
+        messageFormat: "Type '{0}' decorated with [{1}] cannot be declared with the '{2}' modifier",
         category: "Design",
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 
-    public static readonly DiagnosticDescriptor MustBePartialWarning = new(
+    public static readonly DiagnosticDescriptor RequiredModifierMissingError = new(
         id: "FFI0003",
-        title: "Type must be partial",
-        messageFormat: "Type '{0}' decorated with [{1}] must be declared with the 'partial' keyword",
+        title: "Required modifier is missing",
+        messageFormat: "Type '{0}' decorated with [{1}] must be declared with the '{2}' modifier",
         category: "Design",
-        defaultSeverity: DiagnosticSeverity.Warning,
+        defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 
-    public static readonly DiagnosticDescriptor EnclosingTypeMustBePartialWarning = new(
+    public static readonly DiagnosticDescriptor EnclosingTypeMustBePartialError = new(
         id: "FFI0004",
         title: "Enclosing type must be partial",
         messageFormat: "Type '{0}' containing '{1}' must be declared with the 'partial' keyword",
         category: "Design",
-        defaultSeverity: DiagnosticSeverity.Warning,
+        defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 }

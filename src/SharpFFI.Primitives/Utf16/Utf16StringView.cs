@@ -92,6 +92,58 @@ public readonly unsafe ref struct Utf16StringView
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf16StringView FromUtf16CString(Utf16CString value) => new(FrameworkExtensions.CreateSpanFromNullTerminated(value.Pointer));
 
+    /// <summary>
+    /// Computes the length in characters of a null-terminated UTF-16 string at the specified pointer.
+    /// </summary>
+    /// <param name="pointer">The pointer to the null-terminated UTF-16 string.</param>
+    /// <returns>The number of characters up to the null terminator, or 0 if <paramref name="pointer"/> is <see langword="null"/>.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetLength(char* pointer) => FrameworkExtensions.CreateSpanFromNullTerminated(pointer).Length;
+
+    /// <summary>
+    /// Computes the length in characters of a null-terminated UTF-16 string at the specified pointer.
+    /// </summary>
+    /// <param name="pointer">The unmanaged integer pointer to the null-terminated UTF-16 string.</param>
+    /// <returns>The number of characters up to the null terminator, or 0 if <paramref name="pointer"/> is 0.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetLength(nint pointer) => GetLength((char*)pointer);
+
+    /// <summary>
+    /// Computes the length in characters of a UTF-16 string within the specified span up to the first null terminator.
+    /// </summary>
+    /// <param name="span">The span to scan for a null terminator.</param>
+    /// <returns>The number of characters before the first null terminator, or the full length of the span if no null terminator is present.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetLength(ReadOnlySpan<char> span)
+    {
+        var index = span.IndexOf('\0');
+        return index >= 0 ? index : span.Length;
+    }
+
+    /// <summary>
+    /// Computes a 32-bit Marvin hash code for the specified UTF-16 character span.
+    /// </summary>
+    /// <param name="span">The character span to hash.</param>
+    /// <returns>A 32-bit signed integer hash code, or 0 if the span is empty.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCode(ReadOnlySpan<char> span) => span.IsEmpty ? 0 : Marvin.ComputeHash32(MemoryMarshal.AsBytes(span), Marvin.DefaultSeed);
+
+    /// <summary>
+    /// Computes a 32-bit Marvin hash code for the null-terminated UTF-16 string at the specified pointer.
+    /// </summary>
+    /// <param name="pointer">The pointer to the null-terminated UTF-16 string.</param>
+    /// <returns>A 32-bit signed integer hash code, or 0 if <paramref name="pointer"/> is <see langword="null"/>.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCode(char* pointer) => GetHashCode(FrameworkExtensions.CreateSpanFromNullTerminated(pointer));
+
+    /// <summary>
+    /// Computes a 32-bit Marvin hash code for the null-terminated UTF-16 string at the specified pointer.
+    /// </summary>
+    /// <param name="pointer">The unmanaged integer pointer to the null-terminated UTF-16 string.</param>
+    /// <returns>A 32-bit signed integer hash code, or 0 if <paramref name="pointer"/> is 0.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCode(nint pointer) => GetHashCode((char*)pointer);
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Utf16StringView(Span<char> value) => Span = value;
 

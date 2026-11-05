@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using SharpFFI.Primitives.Extensions;
 
 namespace SharpFFI.Primitives.Utf8;
 
@@ -112,7 +111,7 @@ public readonly unsafe struct Utf8CString : IEquatable<Utf8CString>
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => IsEmpty ? 0 : Marvin.ComputeHash32(AsReadOnlyView(), Marvin.DefaultSeed);
+    public override int GetHashCode() => Utf8StringView.GetHashCode(Pointer);
 
     /// <summary>
     /// Decodes the null-terminated UTF-8 string into a managed <see cref="string"/>.

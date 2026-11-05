@@ -128,7 +128,7 @@ public sealed unsafe class NativeUtf8CString : IEquatable<NativeUtf8CString>, ID
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => IsEmpty ? 0 : Marvin.ComputeHash32(AsReadOnlyView(), Marvin.DefaultSeed);
+    public override int GetHashCode() => Utf8StringView.GetHashCode(Span);
 
     /// <summary>
     /// Determines whether this instance and another <see cref="NativeUtf8CString"/> have the same byte content.

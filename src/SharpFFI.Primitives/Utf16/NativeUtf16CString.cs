@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using SharpFFI.Primitives.Extensions;
 
 namespace SharpFFI.Primitives.Utf16;
@@ -103,7 +102,7 @@ public sealed unsafe class NativeUtf16CString : IEquatable<NativeUtf16CString>, 
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => IsEmpty ? 0 : Marvin.ComputeHash32(MemoryMarshal.AsBytes<char>(AsReadOnlyView()), Marvin.DefaultSeed);
+    public override int GetHashCode() => Utf16StringView.GetHashCode(Span);
 
     /// <summary>
     /// Determines whether this instance and another <see cref="NativeUtf16CString"/> have the same character content.

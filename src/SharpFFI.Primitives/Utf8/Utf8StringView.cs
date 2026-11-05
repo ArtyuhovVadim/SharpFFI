@@ -93,6 +93,58 @@ public readonly unsafe ref struct Utf8StringView
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf8StringView FromUtf8CString(Utf8CString value) => new(FrameworkExtensions.CreateSpanFromNullTerminated(value.Pointer));
 
+    /// <summary>
+    /// Computes the length in bytes of a null-terminated UTF-8 string at the specified pointer.
+    /// </summary>
+    /// <param name="pointer">The pointer to the null-terminated UTF-8 string.</param>
+    /// <returns>The number of bytes up to the null terminator, or 0 if <paramref name="pointer"/> is <see langword="null"/>.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetLength(byte* pointer) => FrameworkExtensions.CreateSpanFromNullTerminated(pointer).Length;
+
+    /// <summary>
+    /// Computes the length in bytes of a null-terminated UTF-8 string at the specified pointer.
+    /// </summary>
+    /// <param name="pointer">The unmanaged integer pointer to the null-terminated UTF-8 string.</param>
+    /// <returns>The number of bytes up to the null terminator, or 0 if <paramref name="pointer"/> is 0.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetLength(nint pointer) => GetLength((byte*)pointer);
+
+    /// <summary>
+    /// Computes the length in bytes of a UTF-8 string within the specified span up to the first null terminator.
+    /// </summary>
+    /// <param name="span">The span to scan for a null terminator.</param>
+    /// <returns>The number of bytes before the first null terminator, or the full length of the span if no null terminator is present.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetLength(ReadOnlySpan<byte> span)
+    {
+        var index = span.IndexOf((byte)0);
+        return index >= 0 ? index : span.Length;
+    }
+
+    /// <summary>
+    /// Computes a 32-bit Marvin hash code for the specified UTF-8 byte span.
+    /// </summary>
+    /// <param name="span">The UTF-8 byte span to hash.</param>
+    /// <returns>A 32-bit signed integer hash code, or 0 if the span is empty.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCode(ReadOnlySpan<byte> span) => span.IsEmpty ? 0 : Marvin.ComputeHash32(span, Marvin.DefaultSeed);
+
+    /// <summary>
+    /// Computes a 32-bit Marvin hash code for the null-terminated UTF-8 string at the specified pointer.
+    /// </summary>
+    /// <param name="pointer">The pointer to the null-terminated UTF-8 string.</param>
+    /// <returns>A 32-bit signed integer hash code, or 0 if <paramref name="pointer"/> is <see langword="null"/>.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCode(byte* pointer) => GetHashCode(FrameworkExtensions.CreateSpanFromNullTerminated(pointer));
+
+    /// <summary>
+    /// Computes a 32-bit Marvin hash code for the null-terminated UTF-8 string at the specified pointer.
+    /// </summary>
+    /// <param name="pointer">The unmanaged integer pointer to the null-terminated UTF-8 string.</param>
+    /// <returns>A 32-bit signed integer hash code, or 0 if <paramref name="pointer"/> is 0.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetHashCode(nint pointer) => GetHashCode((byte*)pointer);
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Utf8StringView(Span<byte> value) => Span = value;
 

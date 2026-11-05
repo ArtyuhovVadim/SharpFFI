@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using SharpFFI.Primitives.Extensions;
 
 namespace SharpFFI.Primitives.Utf16;
 
@@ -111,7 +110,7 @@ public readonly unsafe struct Utf16CString : IEquatable<Utf16CString>
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override int GetHashCode() => IsEmpty ? 0 : Marvin.ComputeHash32(MemoryMarshal.AsBytes<char>(AsReadOnlyView()), Marvin.DefaultSeed);
+    public override int GetHashCode() => Utf16StringView.GetHashCode(Pointer);
 
     /// <summary>
     /// Converts the null-terminated UTF-16 string into a managed <see cref="string"/>.

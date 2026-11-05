@@ -165,4 +165,36 @@ public unsafe class Utf8CStringTests
             cstr1.Equals(new object()).ShouldBeFalse();
         }
     }
+
+    [Fact]
+    public void StaticMethods_GetLengthAndGetHashCode()
+    {
+        // Null pointer
+        Utf8StringView.GetLength((byte*)null).ShouldBe(0);
+        Utf8StringView.GetLength((nint)0).ShouldBe(0);
+        Utf8StringView.GetHashCode((byte*)null).ShouldBe(0);
+        Utf8StringView.GetHashCode((nint)0).ShouldBe(0);
+
+        // Empty span
+        Utf8StringView.GetLength(ReadOnlySpan<byte>.Empty).ShouldBe(0);
+        Utf8StringView.GetHashCode(ReadOnlySpan<byte>.Empty).ShouldBe(0);
+
+        // Terminated string
+        var bytes = "Hello, World!\0Extra"u8.ToArray();
+        fixed (byte* p = bytes)
+        {
+            Utf8StringView.GetLength(p).ShouldBe(13);
+            Utf8StringView.GetLength((nint)p).ShouldBe(13);
+            Utf8StringView.GetLength(bytes.AsSpan()).ShouldBe(13);
+
+            var expectedHash = Utf8CString.FromPointer(p).GetHashCode();
+            Utf8StringView.GetHashCode(p).ShouldBe(expectedHash);
+            Utf8StringView.GetHashCode((nint)p).ShouldBe(expectedHash);
+            Utf8StringView.GetHashCode(bytes.AsSpan(0, 13)).ShouldBe(expectedHash);
+        }
+
+        // Unterminated span
+        var unterminated = "NoTerminator"u8.ToArray();
+        Utf8StringView.GetLength(unterminated.AsSpan()).ShouldBe(unterminated.Length);
+    }
 }

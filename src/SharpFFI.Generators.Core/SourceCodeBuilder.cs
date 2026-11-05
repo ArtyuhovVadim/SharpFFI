@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace SharpFFI.Generators.Core;
 
@@ -40,11 +40,83 @@ public class SourceCodeBuilder
 
     public SourceCodeBuilder AppendUsing(string usingName) => AppendLine($"using {usingName};");
 
-    public SourceCodeBuilder AppendAgressiveInlining() => AppendLine("[MethodImpl(MethodImplOptions.AggressiveInlining)]");
+    public SourceCodeBuilder AppendUsings(params string[] namespaces)
+    {
+        foreach (var ns in namespaces)
+            AppendUsing(ns);
+
+        return AppendLine();
+    }
+
+    public SourceCodeBuilder AppendAggressiveInlining() => AppendLine("[MethodImpl(MethodImplOptions.AggressiveInlining)]");
+
+    public SourceCodeBuilder AppendInlined(string line) => AppendAggressiveInlining().AppendLine(line);
+
+    public SourceCodeBuilder AppendEqualityOperators(string typeName) =>
+        AppendInlined($"public static bool operator ==({typeName} left, {typeName} right) => left.Equals(right);")
+       .AppendLine()
+       .AppendInlined($"public static bool operator !=({typeName} left, {typeName} right) => !left.Equals(right);");
+
+    public SourceCodeBuilder AppendFixedBuffer(int capacity, string itemType = "T", string bufferName = "Buffer", string accessibility = "private")
+    {
+        AppendLine("[StructLayout(LayoutKind.Sequential)]");
+
+        using (BeginScope($"{accessibility} struct {bufferName}"))
+        {
+            for (var i = 0; i < capacity; i++)
+                AppendLine($"public {itemType} Item{i};");
+        }
+
+        return this;
+    }
+
+    public SourceCodeBuilder AppendBlock(string text)
+    {
+        using var reader = new StringReader(text);
+        while (reader.ReadLine() is { } line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                AppendLine();
+            }
+            else
+            {
+                AppendCurrentIndent();
+                _stringBuilder.AppendLine(line);
+            }
+        }
+
+        return this;
+    }
 
     public SourceCodeBuilder AppendFileScopedNamespace(string namespaceName) => AppendLine($"namespace {namespaceName};");
 
     public SourceCodeBuilder AppendNamespace(string namespaceName) => AppendLine($"namespace {namespaceName}");
+
+    public IDisposable BeginNamespaceScope(string? namespaceName)
+    {
+        if (string.IsNullOrEmpty(namespaceName))
+            return EmptyScope.Instance;
+
+        AppendNamespace(namespaceName!);
+        return BeginScope();
+    }
+
+    public IDisposable BeginTypeScope(string typeKind, string typeDeclarationName, string modifiers = "partial")
+    {
+        var header = string.IsNullOrEmpty(modifiers)
+            ? $"{typeKind} {typeDeclarationName}"
+            : $"{modifiers} {typeKind} {typeDeclarationName}";
+
+        AppendLine(header);
+        return BeginScope();
+    }
+
+    public IDisposable BeginScope(string header)
+    {
+        AppendLine(header);
+        return BeginScope();
+    }
 
     public SourceCodeBuilder AppendCurrentIndent()
     {
@@ -74,6 +146,15 @@ public class SourceCodeBuilder
         {
             _builder._level--;
             _builder.AppendLine("}");
+        }
+    }
+
+    private sealed class EmptyScope : IDisposable
+    {
+        public static readonly EmptyScope Instance = new();
+
+        public void Dispose()
+        {
         }
     }
 }
